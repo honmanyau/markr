@@ -1,5 +1,7 @@
 # Markr
 
+> A data ingestion and processing microservice for Markr.
+
 This document describes the prototype of the data processing and storage microservice for Markr. It was created in fulfillment of a take-home coding challenge.
 
 ## Table of Contents
