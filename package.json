@@ -4,6 +4,7 @@
   "description": "A data ingestion and processing microservice for Markr.",
   "main": "src/index.js",
   "scripts": {
+    "format": "prettier --write .",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
