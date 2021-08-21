@@ -90,7 +90,7 @@ For retrieving aggregated statistics at the `/result/:testId/aggregate` `GET` en
 ┌────────────────────────┐
 │      Statistics        │
 ├────────────────────────┤
-│    + testId            │
+│ PK + testId            │
 │    + mean              │
 │    + count             │
 │    + p25               │
