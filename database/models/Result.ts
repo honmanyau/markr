@@ -1,6 +1,18 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
-export default class Result extends Model<ResultAttributes> {
+export default class Result
+  extends Model<ResultAttributes>
+  implements ResultAttributes
+{
+  public scannedOn!: Date;
+  public studentNumber!: string;
+  public testId!: string;
+  public firstName!: string;
+  public lastName!: string;
+  public availableMarks!: number;
+  public obtainedMarks!: number;
+  public percentageMark!: number;
+
   /**
    * This function is used to define a model in the database connected to the
    * sequelize instance passed as an argument.
