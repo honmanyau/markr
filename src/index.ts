@@ -1,5 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
+import * as database from '../database';
 import * as routes from './routes';
 
 const port = 4567;
@@ -22,8 +23,10 @@ app.use('/results', routes.results);
 // ===========
 // == Start ==
 // ===========
-app.listen(port, () => {
-  console.log(`Markr is listening at http://localhost:${port}`);
+database.init().then(() => {
+  app.listen(port, () => {
+    console.log(`Markr is listening at http://localhost:${port}`);
+  });
 });
 
 export default process.env.NODE_ENV === 'test' ? app : null;
