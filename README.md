@@ -73,6 +73,7 @@ For storing scanned results at the `/import` `POST` endpoint:
 ┌────────────────────────┐
 │    Result              │
 ├────────────────────────┤
+│  + scannedOn           │
 │  + studentNumber       │
 │  + testId              │
 │  + firstName           │
