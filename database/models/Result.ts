@@ -75,7 +75,7 @@ export interface ResultAttributes {
   availableMarks: number;
   obtainedMarks: number;
   percentageMark: number;
-  createdAt?: Date,
-  updatedAt?: Date,
-  deletedAt?: Date,
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }
