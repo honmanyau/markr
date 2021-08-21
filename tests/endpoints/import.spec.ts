@@ -32,7 +32,7 @@ describe('POST /import', () => {
   });
 
   it(
-    'should respond with a status code of 202 for documents with missing' +
+    'should respond with a status code of 400 for documents with missing' +
       ' information',
     (done) => {
       supertest(app)
@@ -50,7 +50,7 @@ describe('POST /import', () => {
             '</mcq-test-results>',
           ].join('\n')
         )
-        .expect(202)
+        .expect(400)
         .end((error, _res) => {
           if (error) {
             return done(error);

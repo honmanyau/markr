@@ -1,7 +1,10 @@
 import { formatTestResults } from '@jest/test-result';
 import { Router } from 'express';
 import xml2js from 'xml2js';
-import { ResultAttributes } from '../../database/models/Result';
+import {
+  default as Result,
+  ResultAttributes
+} from '../../database/models/Result';
 
 const router = Router();
 
@@ -29,7 +32,23 @@ router.post('/', async (request, response) => {
         });
 
       if (formattedResults) {
-        // TODO: write to database.
+        for (const formattedResult of formattedResults) {
+          const { testId, studentNumber } = formattedResult;
+          const record = await Result.findOne({
+            where: {
+              testId,
+              studentNumber
+            }
+          });
+
+          if (record) {
+            // TODO: implement logic for updating record.
+          }
+          else {
+            const created = await Result.create(formattedResult);
+          }
+        }
+        console.log('DOne!')
         response.status(201).send({ ok: true });
       }
     }
