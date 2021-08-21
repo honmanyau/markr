@@ -71,16 +71,16 @@ For storing scanned results at the `/import` `POST` endpoint:
 
 ```   
 ┌────────────────────────┐
-│    Result              │
+│      Result            │
 ├────────────────────────┤
-│  + scannedOn           │
-│  + studentNumber       │
-│  + testId              │
-│  + firstName           │
-│  + lastName            │
-│  + availableMarks      │
-│  + obtainedMarks       │
-│  + percentageMark      │
+│    + scannedOn         │
+│ PK + studentNumber     │
+│ PK + testId            │
+│    + firstName         │
+│    + lastName          │
+│    + availableMarks    │
+│    + obtainedMarks     │
+│    + percentageMark    │
 ├────────────────────────┤
 ```
 
@@ -88,17 +88,17 @@ For retrieving aggregated statistics at the `/result/:testId/aggregate` `GET` en
 
 ```   
 ┌────────────────────────┐
-│    Statistics          │
+│      Statistics        │
 ├────────────────────────┤
-│  + testId              │
-│  + mean                │
-│  + count               │
-│  + p25                 │
-│  + p50                 │
-│  + p70                 │
-│  + min                 │
-│  + max                 │
-│  + stddev              │
+│    + testId            │
+│    + mean              │
+│    + count             │
+│    + p25               │
+│    + p50               │
+│    + p70               │
+│    + min               │
+│    + max               │
+│    + stddev            │
 ├────────────────────────┤
 ```
 
