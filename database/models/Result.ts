@@ -14,11 +14,11 @@ export default class Result extends Model<ResultAttributes> {
         type: DataTypes.DATE,
       },
       studentNumber: {
-        allowNull: false,
+        primaryKey: true,
         type: DataTypes.STRING,
       },
       testId: {
-        allowNull: false,
+        primaryKey: true,
         type: DataTypes.STRING,
       },
       firstName: {
