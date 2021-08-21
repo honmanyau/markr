@@ -4,11 +4,11 @@
   "description": "A data ingestion and processing microservice for Markr.",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
+    "dev": "NODE_ENV=development nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts",
-    "test": "NODE_ENV=test jest --verbose test",
-    "test:with-coverage": "NODE_ENV=test jest --coverage test"
+    "test": "NODE_ENV=test jest --verbose tests",
+    "test:with-coverage": "NODE_ENV=test jest --coverage tests"
   },
   "repository": {
     "type": "git",
@@ -29,13 +29,15 @@
     "express": "^4.17.1",
     "helmet": "^4.6.0",
     "sequelize": "^6.6.5",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^4.2.0",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/helmet": "^4.0.0",
     "@types/jest": "^27.0.1",
     "@types/supertest": "^2.0.11",
+    "@types/xml2js": "^0.4.9",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
     "eslint": "^7.32.0",

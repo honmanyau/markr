@@ -69,7 +69,7 @@ The microservice will have the following endpoints and methods:
 
 For storing scanned results at the `/import` `POST` endpoint:
 
-```   
+```
 ┌────────────────────────┐
 │      Result            │
 ├────────────────────────┤
@@ -86,7 +86,7 @@ For storing scanned results at the `/import` `POST` endpoint:
 
 For retrieving aggregated statistics at the `/result/:testId/aggregate` `GET` endpoint:
 
-```   
+```
 ┌────────────────────────┐
 │      Statistics        │
 ├────────────────────────┤
