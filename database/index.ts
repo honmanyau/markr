@@ -5,14 +5,11 @@ import * as models from './models';
 
 export const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage:
-    process.env.NODE_ENV === 'production'
-      ? DB_PATH
-      : ':memory:',
+  storage: process.env.NODE_ENV === 'production' ? DB_PATH : ':memory:',
   logging: process.env.NODE_ENV === 'production' ? false : console.log,
 });
 
-for (const [ _name, model ] of Object.entries(models)) {
+for (const [_name, model] of Object.entries(models)) {
   model.defineModel(sequelize);
 }
 

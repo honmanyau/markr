@@ -29,7 +29,7 @@ if (process.env.NODE_ENV !== 'test') {
     app.listen(SERVER_PORT, () => {
       console.log(`Markr is listening at http://localhost:${SERVER_PORT}`);
     });
-  }); 
+  });
 }
 
 export default process.env.NODE_ENV === 'test' ? app : null;
