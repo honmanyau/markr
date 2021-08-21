@@ -66,7 +66,7 @@ export default class Result extends Model<ResultAttributes> {
 // ===========
 // == Types ==
 // ===========
-interface ResultAttributes {
+export interface ResultAttributes {
   scannedOn: Date;
   studentNumber: string;
   testId: string;
