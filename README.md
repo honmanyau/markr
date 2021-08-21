@@ -95,7 +95,7 @@ For retrieving aggregated statistics at the `/result/:testId/aggregate` `GET` en
 │    + count             │
 │    + p25               │
 │    + p50               │
-│    + p70               │
+│    + p75               │
 │    + min               │
 │    + max               │
 │    + stddev            │
