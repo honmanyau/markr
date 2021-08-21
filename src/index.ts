@@ -1,5 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
+import * as routes from './routes';
 
 const port = 4567;
 const app = express();
@@ -15,35 +16,8 @@ app.use(helmet());
 app.get('/', (_request, response) => {
   response.status(200).send({ ok: true });
 });
-app.post('/import', (request, response) => {
-  if (request.get('Content-Type') === 'text/xml+markr') {
-    // TODO: data parsing, validation, processing, and storage.
-    
-    response
-      .status(200)
-      .send({
-        ok: true
-      });
-  }
-  else {
-    response
-      .status(415)
-      .send({
-        ok: false,
-        statusCode: 415,
-        error: 'Unsupported media type.',
-        message: 'Please check the Content-Type header is correctly set.'
-      });
-  }
-});
-app.get('/results/:testId/aggregate', (request, response) => {
-  response
-    .status(200)
-    .send({
-      ok: true,
-      message: `Statistics for test ID ${request.params.testId}`
-    });
-});
+app.use('/import', routes.import);
+app.use('/results', routes.results);
 
 // ===========
 // == Start ==
