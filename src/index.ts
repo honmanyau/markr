@@ -1,5 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
+import * as routes from './routes';
 
 const port = 4567;
 const app = express();
@@ -15,6 +16,8 @@ app.use(helmet());
 app.get('/', (_request, response) => {
   response.status(200).send({ ok: true });
 });
+app.use('/import', routes.import);
+app.use('/results', routes.results);
 
 // ===========
 // == Start ==
