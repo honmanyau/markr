@@ -76,7 +76,7 @@ describe('POST /import', () => {
           ' </mcq-test-result>',
           '</mcq-test-results>',
         ].join('\n'))
-        .expect(202)
+        .expect(201)
         .end((error, _res) => {
           if (error) {
             return done(error);
