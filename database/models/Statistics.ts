@@ -91,4 +91,7 @@ interface StatisticsAttributes {
   min: number;
   max: number;
   stddev: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }
