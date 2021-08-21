@@ -1,12 +1,13 @@
 import path from 'path';
 import { Sequelize } from 'sequelize';
+import { DB_PATH } from '../markr.config';
 import * as models from './models';
 
 export const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage:
     process.env.NODE_ENV === 'production'
-      ? path.join(process.cwd(), '/database/markr.sqlite')
+      ? DB_PATH
       : ':memory:',
   logging: process.env.NODE_ENV === 'production' ? false : console.log,
 });
