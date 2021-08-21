@@ -11,6 +11,7 @@ This document describes the prototype of the data processing and storage microse
 * [Assumptions](#assumptions)
 * [Design and Approach](#design-and-approach)
   * [Endpoints](#endpoints)
+  * [Tech Stack](#tech-stack)
 * [Potential Extensions](#potential-extensions)
 * [Originality Statement](#originality-statement)
 * [Beginning Remarks](#beginning-remarks)
@@ -60,6 +61,26 @@ The microservice will have the following endpoints and methods:
       * Aggregrates results for a given test ID and returns a JSON object that includes `mean`, `count`, `p25`, `p50` and `p75`. Other than `count`, these need to be expressed in percentages. Example given: `{"mean":65.0,"stddev":0.0,"min":65.0,"max":65.0,"p25":65.0,"p50":65.0,"p75":65.0,"count":1}`.
       * (Optional) If time allows, we will also implement standard deviation, minimum and maximum. These are not explicitly stated in the requirements, but would be nice to have (I also just realised maybe I was supposed to ask questions about this?).
       * (Optional) If time allows, implementing some sort of caching mechanism here would be nice.
+
+### Tech Stack
+
+#### Server
+
+We will use a [Node.js](https://nodejs.org) + [Express](https://expressjs.com) server — mostly because there are not restrictions in the requirements and it's what I'm most familiar with.
+
+Express does introduce a bit of an overhead, but it's nicer to write than vanilla Node.js, and has a nice ecosystem of middlewares that can be dropped in to get the prototype "production-ready" in case this prototype "somehow find its way into production". I did consider Fastify for (potentially) better performance, but I personally find some parts less intuitive the last few times I used it, so I ditched that thought.
+
+Since it is a JavaScript environment, we will also use [TypeScript](https://www.typescriptlang.org) for development!
+
+#### Database
+
+For the DBMS we will use SQLite since there are no strict requirements (well, the team is ignoring me on Slack!), it's just nice and simple to set up and it's file-based. I did consider using a Docker image for PostgreSQL, but I'm not sure how much friction that will end to setting things up for submission later, so I scrapped that thought.
+
+We will use [Sequelize](https://sequelize.org) for interfacing Node.js and SQLite. The choice to use Sequelize here is because we can easily introduce type checking into database models with TypeScript, and we can readily switch between a few SQL dialects in case the team really doesn't like SQLite.
+
+#### Docker + Docker Compose
+
+It's part of the requirements, nothing much to be said here and included for completeness!
 
 ## Potential Extensions
 
