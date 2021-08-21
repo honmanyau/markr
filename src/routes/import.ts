@@ -1,16 +1,13 @@
 import { Router } from 'express';
 import xml2js from 'xml2js';
+import { ResultAttributes } from '../../database/models/Result';
 
 const router = Router();
 
-router.post('/', (request, response) => {
+router.post('/', async (request, response) => {
   if (request.get('Content-Type') === 'text/xml+markr') {
-    parseMarkrXml(request.body)
-      .then((parsed) => {
-        // TODO: handle data.
-        response.status(201).send({ ok: true });
-      })
-      .catch((error) => {
+    const parsedData = await parseMarkrXml(request.body)
+      .catch((_error) => {
         response.status(400).send({
           ok: false,
           statusCode: 400,
@@ -18,6 +15,11 @@ router.post('/', (request, response) => {
           message: 'Please check that the request body is correctly formatted.',
         });
       });
+    
+    if (parsedData) {
+      // TODO: handle data.
+      response.status(201).send({ ok: true });
+    }
   } else {
     response.status(415).send({
       ok: false,
