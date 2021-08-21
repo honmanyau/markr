@@ -1,3 +1,4 @@
+import { formatTestResults } from '@jest/test-result';
 import { Router } from 'express';
 import xml2js from 'xml2js';
 import { ResultAttributes } from '../../database/models/Result';
@@ -17,7 +18,20 @@ router.post('/', async (request, response) => {
 
     if (parsedData) {
       // TODO: handle data.
-      response.status(201).send({ ok: true });
+      const formattedResults = await processReults(parsedData)
+        .catch((_error) => {
+          response.status(400).send({
+            ok: false,
+            statusCode: 400,
+            error: 'Bad request.',
+            message: 'The document contains invalid or missing fields.',
+          });
+        });
+
+      if (formattedResults) {
+        // TODO: write to database.
+        response.status(201).send({ ok: true });
+      }
     }
   } else {
     response.status(415).send({
@@ -67,10 +81,70 @@ function processReults(
   parsedData: ParsedDocument
 ): Promise<ResultAttributes[]> {
   return new Promise((resolve, reject) => {
-    if (!parsedData.hasOwnProperty('mcq-test-results')) {
+    if (!parsedData['mcq-test-results']) {
       reject(
-        new Error('The document does not contain a `mcq-test-results` field ')
+        new Error('The document does not contain a `mcq-test-results` field.')
       );
+    } else if (!parsedData['mcq-test-results']['mcq-test-result']) {
+      reject(new Error('The document does not contain any test results.'));
+    } else {
+      const formattedResults: ResultAttributes[] = [];
+      const testResults = parsedData['mcq-test-results']['mcq-test-result'];
+
+      for (const testResult of testResults) {
+        // TODO: refactor these type guards.
+        if (
+          !testResult
+          || !testResult.$
+          || !testResult.$['scanned-on']
+          || !testResult['first-name']
+          || testResult['first-name'].length !== 1
+          || !testResult['last-name']
+          || testResult['last-name'].length !== 1
+          || !testResult['student-number']
+          || testResult['student-number'].length !== 1
+          || !testResult['test-id']
+          || testResult['test-id'].length !== 1
+          || !testResult['summary-marks']
+          || testResult['summary-marks'].length !== 1
+          || !testResult['summary-marks'][0]
+          || !testResult['summary-marks'][0].$
+          || !testResult['summary-marks'][0].$.available
+          || !testResult['summary-marks'][0].$.available.length
+          || !testResult['summary-marks'][0].$.obtained
+          || !testResult['summary-marks'][0].$.obtained.length
+        ) {
+          reject(new Error(
+            'The document contains an entry with missing fields.'
+          ));
+        } else {
+          const scannedOn = new Date(testResult.$['scanned-on']);
+          const firstName = testResult['first-name'][0];
+          const lastName = testResult['last-name'][0];
+          const studentNumber = testResult['student-number'][0];
+          const testId = testResult['test-id'][0];
+          const availableMarks = Number(
+            testResult['summary-marks'][0].$.available
+          );
+          const obtainedMarks = Number(
+            testResult['summary-marks'][0].$.obtained
+          );
+          const percentageMark = obtainedMarks / availableMarks * 100;
+
+          formattedResults.push({
+            scannedOn,
+            firstName,
+            lastName,
+            studentNumber,
+            testId,
+            availableMarks,
+            obtainedMarks,
+            percentageMark,
+          });
+        }
+      }
+
+      resolve(formattedResults);
     }
   });
 }
