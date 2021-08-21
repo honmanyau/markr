@@ -79,7 +79,7 @@ function processReults(
 // == Types ==
 // ===========
 type ParsedDocument = {
-  'mcq-test-results'?: ParsedTestResult;
+  'mcq-test-results'?: ParsedTestResult[];
 };
 
 type ParsedTestResult = {
