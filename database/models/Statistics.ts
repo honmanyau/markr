@@ -1,6 +1,6 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
-export default class Result extends Model<StatisticsAttributes> {
+export default class Statistics extends Model<StatisticsAttributes> {
   /**
    * This function is used to define a model in the database connected to the
    * sequelize instance passed as an argument.
