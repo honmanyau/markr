@@ -16,6 +16,10 @@ export default class Result extends Model<StatisticsAttributes> {
       mean: {
         allowNull: false,
         type: DataTypes.FLOAT,
+        validate: {
+          min: 0,
+          max: 100
+        }
       },
       count: {
         allowNull: false,
@@ -24,22 +28,42 @@ export default class Result extends Model<StatisticsAttributes> {
       p25: {
         allowNull: false,
         type: DataTypes.FLOAT,
+        validate: {
+          min: 0,
+          max: 100
+        }
       },
       p50: {
         allowNull: false,
         type: DataTypes.FLOAT,
+        validate: {
+          min: 0,
+          max: 100
+        }
       },
       p75: {
         allowNull: false,
         type: DataTypes.FLOAT,
+        validate: {
+          min: 0,
+          max: 100
+        }
       },
       min: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        validate: {
+          min: 0,
+          max: 100
+        }
       },
       max: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        validate: {
+          min: 0,
+          max: 100
+        }
       },
       stddev: {
         allowNull: false,
