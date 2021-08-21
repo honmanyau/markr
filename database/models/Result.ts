@@ -12,6 +12,9 @@ export default class Result extends Model<ResultAttributes> {
       scannedOn: {
         allowNull: false,
         type: DataTypes.DATE,
+        validate: {
+          isDate: true,
+        }
       },
       studentNumber: {
         primaryKey: true,
@@ -32,14 +35,24 @@ export default class Result extends Model<ResultAttributes> {
       availableMarks: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        validate: {
+          min: 0
+        }
       },
       obtainedMarks: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        validate: {
+          min: 0
+        }
       },
       percentageMark: {
         allowNull: false,
         type: DataTypes.FLOAT,
+        validate: {
+          min: 0,
+          max: 100
+        }
       },
     }, {
       sequelize
