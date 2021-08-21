@@ -23,10 +23,12 @@ app.use('/results', routes.results);
 // ===========
 // == Start ==
 // ===========
-database.init().then(() => {
-  app.listen(SERVER_PORT, () => {
-    console.log(`Markr is listening at http://localhost:${SERVER_PORT}`);
-  });
-});
+if (process.env.NODE_ENV !== 'test') {
+  database.init().then(() => {
+    app.listen(SERVER_PORT, () => {
+      console.log(`Markr is listening at http://localhost:${SERVER_PORT}`);
+    });
+  }); 
+}
 
 export default process.env.NODE_ENV === 'test' ? app : null;
