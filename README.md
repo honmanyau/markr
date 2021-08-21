@@ -78,6 +78,10 @@ For the DBMS we will use SQLite since there are no strict requirements (well, th
 
 We will use [Sequelize](https://sequelize.org) for interfacing Node.js and SQLite. The choice to use Sequelize here is because we can easily introduce type checking into database models with TypeScript, and we can readily switch between a few SQL dialects in case the team really doesn't like SQLite.
 
+#### Testing
+
+We will use the [Jest](https://jestjs.io) test framework for unit tests. Mostly chosen because of the ease to get it up and running, and that it can easily given an indication of how abysmal code coverage is without additional dependencies. We will also use [`supertest`](https://github.com/visionmedia/supertest) to help with testing endpoints.
+
 #### Docker + Docker Compose
 
 It's part of the requirements, nothing much to be said here and included for completeness!
