@@ -1,7 +1,13 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
 export default class Result extends Model<ResultAttributes> {
-  static defineModel(sequelize: Sequelize) {
+  /**
+   * This function is used to define a model in the database connected to the
+   * sequelize instance passed as an argument.
+   * 
+   * @param {Sequelize} sequelize A sequelize instance.
+   */
+  static defineModel(sequelize: Sequelize): void {
     this.init({
       scannedOn: {
         allowNull: false,
