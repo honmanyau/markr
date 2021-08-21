@@ -1,0 +1,24 @@
+{
+  "name": "markr",
+  "version": "0.1.0",
+  "description": "A data ingestion and processing microservice for Markr.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/honmanyau/markr.git"
+  },
+  "keywords": [
+    "markr",
+    "marking",
+    "microservice"
+  ],
+  "author": "Honman Yau",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/honmanyau/markr/issues"
+  },
+  "homepage": "https://github.com/honmanyau/markr#readme"
+}
