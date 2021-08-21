@@ -10,6 +10,7 @@ const app = express();
 // == Middlewares ==
 // =================
 app.use(helmet());
+app.use(express.text({ type: 'text/xml+markr' }));
 
 // ============
 // == Routes ==
