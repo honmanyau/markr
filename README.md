@@ -20,6 +20,8 @@ This document describes the prototype of the data processing and storage microse
 
 ## Assumptions
 
+
+
 ## Design and Approach
 
 ## Potential Extensions
@@ -37,6 +39,7 @@ It may be worth noting that I read through the requirements 3 days ago and there
 I personally find that the estimated time of 2–3 hours for completing this challenge is non-trivial. While hacking together a working prototype within 3 hours is definitely possible, meeting most of the requirements described in the requirements will likely require the following time spent:
 
 | Task | Duration / hour |
+| ---- | --------------- |
 | (Re-)reading, planning, designing, and writing documentation | 1.0 |
 | Project setup | 0.5 |
 | Producing a functional prototype | 1.5 |
