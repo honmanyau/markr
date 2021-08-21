@@ -65,6 +65,43 @@ The microservice will have the following endpoints and methods:
     - (Optional) If time allows, we will also implement standard deviation, minimum and maximum. These are not explicitly stated in the requirements, but would be nice to have (I also just realised maybe I was supposed to ask questions about this?).
     - (Optional) If time allows, implementing some sort of caching mechanism here would be nice.
 
+### Data models
+
+For storing scanned results at the `/import` `POST` endpoint:
+
+```   
+┌────────────────────────┐
+│      Result            │
+├────────────────────────┤
+│    + scannedOn         │
+│ PK + studentNumber     │
+│ PK + testId            │
+│    + firstName         │
+│    + lastName          │
+│    + availableMarks    │
+│    + obtainedMarks     │
+│    + percentageMark    │
+├────────────────────────┤
+```
+
+For retrieving aggregated statistics at the `/result/:testId/aggregate` `GET` endpoint:
+
+```   
+┌────────────────────────┐
+│      Statistics        │
+├────────────────────────┤
+│ PK + testId            │
+│    + mean              │
+│    + count             │
+│    + p25               │
+│    + p50               │
+│    + p75               │
+│    + min               │
+│    + max               │
+│    + stddev            │
+├────────────────────────┤
+```
+
 ### Tech Stack
 
 #### Server
