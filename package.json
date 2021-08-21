@@ -4,11 +4,11 @@
   "description": "A data ingestion and processing microservice for Markr.",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
+    "dev": "NODE_ENV=development nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts",
-    "test": "NODE_ENV=test jest --verbose test",
-    "test:with-coverage": "NODE_ENV=test jest --coverage test"
+    "test": "NODE_ENV=test jest --verbose tests",
+    "test:with-coverage": "NODE_ENV=test jest --coverage tests"
   },
   "repository": {
     "type": "git",
