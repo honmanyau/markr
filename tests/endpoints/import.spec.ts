@@ -221,12 +221,11 @@ describe('POST /import', () => {
     });
 
   it(
-    'should create a new entry for an entry with the same test ID and student'
-    + ' but different first name and/or last name and return status code 201',
+    'should reject an entry for which available > obtained',
     (done) => {
       const entry4: typeof entry1 = {
         ...entry1,
-        obtainedMarks: entry1.obtainedMarks + 1
+        obtainedMarks: entry1.availableMarks + 1
       };
 
       supertest(app)
