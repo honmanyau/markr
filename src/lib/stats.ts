@@ -1,3 +1,5 @@
+import { validate } from "@babel/types";
+
 /**
  * This function calculates and returns the mean of the numbers in an array.
  * 
@@ -88,11 +90,14 @@ export function nearestRankPercentile(nums: number[], n: number): number {
  * @returns {number} The population variance of the input array.
  */
  export function populationVariance(nums: number[]): number {
-  throwIfEmpty(nums);
+  throwIfEmpty(nums, 'populationVariance()');
 
-  let sum = -Infinity;
+  const mu = mean(nums);
+  const result = sum(nums.map((num) => (num - mu) ** 2)) / nums.length;
 
-  return sum;
+  validateNumber(result, 'populationVariance()');
+
+  return result;
 }
 
 /**
