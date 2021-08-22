@@ -1,15 +1,15 @@
 # Builds
-/build
+build
 
 # Dependencies
-/node_modules
+node_modules
 
 # Miscellaneous
 .DS_Store
 .vscode
 
 # Tests
-/coverage
+coverage
 
 # .env files
 .env
