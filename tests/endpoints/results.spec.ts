@@ -74,8 +74,7 @@ describe('GET /results/:testId/aggregate', () => {
             max: 65.0,
             stddev: 0,
           };
-
-          // TODO: check that data returned matches expectation.
+          
           expect(expected).toEqual(response.body);
 
           return done();

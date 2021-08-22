@@ -11,9 +11,25 @@ router.get('/:testId/aggregate', async (request, response) => {
 
   if (results.length > 0) {
     // TODO: handle statistics.
+    const mean = -1;
+    const count = -1;
+    const p25 = -1;
+    const p50 = -1;
+    const p75 = -1;
+    const min = -1;
+    const max = -1;
+    const stddev = -1;
+
     response.status(200).send({
-      ok: true,
-      message: `Statistics for test ID ${testId}`,
+      testId,
+      mean,
+      count,
+      p25,
+      p50,
+      p75,
+      min,
+      max,
+      stddev,
     });
   }
   else {
