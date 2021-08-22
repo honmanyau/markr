@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/', async (request, response) => {
   if (request.get('Content-Type') === 'text/xml+markr') {
-    const parsedData = await parseMarkrXml(request.body).catch((_error) => {
+    const parsedXml = await parseMarkrXml(request.body).catch((_error) => {
       response.status(400).send({
         ok: false,
         statusCode: 400,
@@ -18,8 +18,8 @@ router.post('/', async (request, response) => {
       });
     });
 
-    if (parsedData) {
-      const formattedResults = await processReults(parsedData).catch(
+    if (parsedXml) {
+      const processedEntries = await processReults(parsedXml).catch(
         (_error) => {
           response.status(400).send({
             ok: false,
@@ -30,14 +30,14 @@ router.post('/', async (request, response) => {
         }
       );
 
-      if (formattedResults) {
-        for (const formattedResult of formattedResults) {
+      if (processedEntries) {
+        for (const processedEntry of processedEntries) {
           const {
             testId,
             studentNumber,
             firstName,
             lastName
-          } = formattedResult;
+          } = processedEntry;
 
           const record = await Result.findOne({
             where: {
@@ -51,17 +51,17 @@ router.post('/', async (request, response) => {
           if (record) {
             let shouldUpdate = false;
             
-            if (formattedResult.availableMarks > record.availableMarks) {
+            if (processedEntry.availableMarks > record.availableMarks) {
               shouldUpdate = true;
             } else if (
-              formattedResult.availableMarks === record.availableMarks &&
-              formattedResult.obtainedMarks > record.obtainedMarks
+              processedEntry.availableMarks === record.availableMarks &&
+              processedEntry.obtainedMarks > record.obtainedMarks
             ) {
               shouldUpdate = true;
             }
 
             if (shouldUpdate) {
-              const { availableMarks, obtainedMarks } = formattedResult;
+              const { availableMarks, obtainedMarks } = processedEntry;
               const percentageMark = obtainedMarks / availableMarks * 100;
 
               await record.update({
@@ -71,7 +71,7 @@ router.post('/', async (request, response) => {
               });
             }
           } else {
-            await Result.create(formattedResult);
+            const created = await Result.create(processedEntry);
           }
         }
 
@@ -157,7 +157,9 @@ function processReults(
           !testResult['summary-marks'][0].$.available ||
           !testResult['summary-marks'][0].$.available.length ||
           !testResult['summary-marks'][0].$.obtained ||
-          !testResult['summary-marks'][0].$.obtained.length
+          !testResult['summary-marks'][0].$.obtained.length ||
+          (testResult['summary-marks'][0].$.obtained > 
+            testResult['summary-marks'][0].$.available)
         ) {
           reject(
             new Error('The document contains an entry with missing fields.')
