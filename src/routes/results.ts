@@ -22,7 +22,7 @@ router.get('/:testId/aggregate', async (request, response) => {
     const p75 = stats.nearestRankPercentile(percentageMarks, 0.75);
     const min = Math.min(...percentageMarks);
     const max = Math.max(...percentageMarks);
-    const stddev = stats.sampleStddev(percentageMarks);
+    const stddev = stats.populationStddev(percentageMarks);
 
     response.status(200).send({
       testId,
