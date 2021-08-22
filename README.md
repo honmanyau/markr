@@ -47,8 +47,8 @@ The assumptions below are numbered only so that they are easy to refer to — th
 6. The boss' threat-model is acceptable for this prototype, and we wil not encrypt the database and localhost traffic. If the container is deployed inside trustworthy infrastructure behind a reverse proxy server that already interfaces with the outside world over TLS/HTTPS, then it's probably okay.
 7. A re-sit test has **the same test ID** as the test that it is meant to augment, and follows the same update rules as those for duplicated records.
 8. When an update of scores _may_ occur, `available` takes precedence over `obtained`. If I haven't missed anything, that boils down to:
-    - New `available` > old `available` — always update regardless of changes in `obtained`.
-    - New `available` == old `available`, `obtained` changes — update if new `obtained` > old `obtained`.
+   - New `available` > old `available` — always update regardless of changes in `obtained`.
+   - New `available` == old `available`, `obtained` changes — update if new `obtained` > old `obtained`.
 
 ## Additional Assumptions
 
