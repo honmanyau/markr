@@ -10,6 +10,10 @@ router.get('/:testId/aggregate', async (request, response) => {
   });
 
   if (results.length > 0) {
+    const percentageMarks = results
+      .map((v) => v.percentageMark)
+      .sort((a, b) => a - b);
+
     // TODO: handle statistics.
     const mean = -1;
     const count = -1;
