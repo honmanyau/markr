@@ -75,11 +75,13 @@ export function nearestRankPercentile(nums: number[], n: number): number {
  * @returns {number} The population standard deviation of the input array.
  */
  export function populationStddev(nums: number[]): number {
-  throwIfEmpty(nums);
+  throwIfEmpty(nums, 'populationStddev()');
 
-  let sum = -Infinity;
+  const result = Math.sqrt(populationVariance(nums));
 
-  return sum;
+  validateNumber(result, 'populationVariance()');
+
+  return result;
 }
 
 /**
