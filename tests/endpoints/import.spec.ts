@@ -192,4 +192,31 @@ describe('POST /import', () => {
           return done();
         });
     });
+  
+  it(
+    'should create a new entry for an entry with the same test ID and student'
+    + ' but different first name and/or last name and return status code 201',
+    (done) => {
+      const entry4 = {
+        ...entry1,
+        firstName: 'Nadeshiko',
+        lastName: 'Nyanpasu'
+      };
+
+      supertest(app)
+        .post('/import')
+        .set('Content-Type', 'text/xml+markr')
+        .send(createDocument([
+          entry1,
+          entry4,
+        ]))
+        .expect(201)
+        .end((error, _res) => {
+          if (error) {
+            return done(error);
+          }
+
+          return done();
+        });
+    });
 });
