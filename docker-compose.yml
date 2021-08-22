@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  markr-development:
+    build:
+      context: .
+      target: development
+    image: markr-development
+    container_name: markr-development
+    environment:
+      - NODE_ENV=development
+      - PORT=4567
+    ports:
+      - "4567:4567"
+    volumes:
+      - .:/usr/node/markr
+      - node_modules:/usr/node/markr/node_modules
+
+volumes:
+  node_modules:

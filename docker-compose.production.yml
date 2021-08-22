@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  markr-production:
+    build:
+      context: .
+      target: production
+    image: markr-production
+    container_name: markr-production
+    environment:
+      - NODE_ENV=production
+      - PORT=4567
+    ports:
+      - "4567:4567"
+    volumes:
+      - node_modules:/usr/node/markr/node_modules
+
+volumes:
+  node_modules:
