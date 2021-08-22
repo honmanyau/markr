@@ -1,12 +1,13 @@
-# Builds
-build
-
 # Dependencies
 node_modules
 
 # Miscellaneous
 .DS_Store
 .vscode
+
+# Production
+build
+database
 
 # Tests
 coverage

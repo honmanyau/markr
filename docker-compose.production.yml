@@ -13,6 +13,7 @@ services:
     ports:
       - "4567:4567"
     volumes:
+      - ./database:/usr/node/markr/database
       - node_modules:/usr/node/markr/node_modules
 
 volumes:
