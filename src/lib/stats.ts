@@ -45,9 +45,25 @@ export function nearestRankPercentile(nums: number[], n: number): number {
  * @returns {number} The sum of all numbers in the input array.
  */
  export function sum(nums: number[]): number {
-  let sum = -Infinity;
+  if (nums.length === 0) {
+    throw new Error('sum() only accepts a non-empty array of numbers.');
+  }
 
-  return sum;
+  let result = 0;
+
+  for (const num of nums) {
+    result += num;
+  }
+
+  if (
+    !Number.isFinite(result) ||
+    Number.isNaN(result) ||
+    typeof result !== 'number'
+  ) {
+    throw new Error('sum() only accepts a non-empty array of numbers.');
+  }
+
+  return result;
 }
 
 /**
