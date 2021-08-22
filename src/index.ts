@@ -1,7 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import * as database from '../database';
-import { SERVER_PORT } from '../markr.config';
+import { SERVER_PORT, UPLOAD_LIMIT } from '../markr.config';
 import * as routes from './routes';
 
 const app = express();
@@ -10,7 +10,10 @@ const app = express();
 // == Middlewares ==
 // =================
 app.use(helmet());
-app.use(express.text({ type: 'text/xml+markr' }));
+app.use(express.text({
+  type: 'text/xml+markr',
+  limit: UPLOAD_LIMIT
+}));
 
 // ============
 // == Routes ==
