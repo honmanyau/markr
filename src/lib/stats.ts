@@ -5,6 +5,8 @@
  * @returns {number} The mean of the values in the input array.
  */
 export function mean(nums: number[]): number {
+  throwIfEmpty(nums);
+  
   let sum = -Infinity;
 
   return sum;
@@ -20,6 +22,8 @@ export function mean(nums: number[]): number {
  * @returns {number} The n-th percentile of the input array.
  */
 export function nearestRankPercentile(nums: number[], n: number): number {
+  throwIfEmpty(nums);
+
   let sum = -Infinity;
 
   return sum;
@@ -45,9 +49,7 @@ export function nearestRankPercentile(nums: number[], n: number): number {
  * @returns {number} The sum of all numbers in the input array.
  */
  export function sum(nums: number[]): number {
-  if (nums.length === 0) {
-    throw new Error('sum() only accepts a non-empty array of numbers.');
-  }
+  throwIfEmpty(nums);
 
   let result = 0;
 
@@ -75,6 +77,8 @@ export function nearestRankPercentile(nums: number[], n: number): number {
  * @returns {number} The population standard deviation of the input array.
  */
  export function populationStddev(nums: number[]): number {
+  throwIfEmpty(nums);
+
   let sum = -Infinity;
 
   return sum;
@@ -88,7 +92,22 @@ export function nearestRankPercentile(nums: number[], n: number): number {
  * @returns {number} The population variance of the input array.
  */
  export function populationVariance(nums: number[]): number {
+  throwIfEmpty(nums);
+
   let sum = -Infinity;
 
   return sum;
+}
+
+/**
+ * This function throws an error if the given array is empty.
+ * 
+ * @param {any[]} arr An array.
+ * @param {string} [name="This function"] An optional parameter for
+ *     specifying the name of the function that is throwing an error.
+ */
+function throwIfEmpty(arr: any[], name = 'This function') {
+  if (arr.length === 0) {
+    throw new Error(`${name} only accepts a non-empty array of numbers.`);
+  }
 }
