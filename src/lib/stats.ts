@@ -37,9 +37,9 @@ export function nearestRankPercentile(nums: number[], n: number): number {
     );
   }
 
-  const ordinalRank = Math.ceil(n * nums.length);
+  const ordinalRank = Math.ceil(n * sortedNums.length);
 
-  return nums[ordinalRank - 1];
+  return sortedNums[ordinalRank - 1];
 }
 
 // /**
