@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Response, Router } from 'express';
 import xml2js from 'xml2js';
 import {
   default as Result,
@@ -9,59 +9,74 @@ const router = Router();
 
 router.post('/', async (request, response) => {
   if (request.get('Content-Type') === 'text/xml+markr') {
-    const parsedData = await parseMarkrXml(request.body).catch((_error) => {
-      response.status(400).send({
-        ok: false,
-        statusCode: 400,
-        error: 'Bad request.',
-        message: 'Please check that the request body is correctly formatted.',
-      });
+    let documentRejected = false;
+
+    const parsedXml = await parseMarkrXml(request.body).catch(() => {
+      documentRejected = true;
     });
 
-    if (parsedData) {
-      const formattedResults = await processReults(parsedData).catch(
-        (_error) => {
-          response.status(400).send({
-            ok: false,
-            statusCode: 400,
-            error: 'Bad request.',
-            message: 'The document contains invalid or missing fields.',
-          });
-        }
-      );
+    if (parsedXml) {
+      const processedEntries = await processReults(parsedXml).catch(() => {
+        documentRejected = true;
+      });
 
-      if (formattedResults) {
-        for (const formattedResult of formattedResults) {
-          const { testId, studentNumber } = formattedResult;
+      if (processedEntries) {
+        for (const processedEntry of processedEntries) {
+          const {
+            testId,
+            studentNumber,
+            firstName,
+            lastName
+          } = processedEntry;
+
           const record = await Result.findOne({
             where: {
               testId,
               studentNumber,
+              firstName,
+              lastName,
             },
           });
 
           if (record) {
-            if (formattedResult.availableMarks > record.availableMarks) {
-              await record.update({
-                availableMarks: formattedResult.availableMarks,
-                obtainedMarks: formattedResult.obtainedMarks,
-              });
+            let shouldUpdate = false;
+            
+            if (processedEntry.availableMarks > record.availableMarks) {
+              shouldUpdate = true;
             } else if (
-              formattedResult.availableMarks === record.availableMarks &&
-              formattedResult.obtainedMarks > record.obtainedMarks
+              processedEntry.availableMarks === record.availableMarks &&
+              processedEntry.obtainedMarks > record.obtainedMarks
             ) {
+              shouldUpdate = true;
+            }
+
+            if (shouldUpdate) {
+              const { availableMarks, obtainedMarks } = processedEntry;
+              const percentageMark = obtainedMarks / availableMarks * 100;
+
               await record.update({
-                availableMarks: formattedResult.availableMarks,
-                obtainedMarks: formattedResult.obtainedMarks,
+                availableMarks,
+                obtainedMarks,
+                percentageMark,
               });
             }
           } else {
-            await Result.create(formattedResult);
+            await Result.create(processedEntry);
           }
         }
-
-        response.status(201).send({ ok: true });
       }
+    }
+
+    if (documentRejected) {
+      response.status(400).send({
+        ok: false,
+        statusCode: 400,
+        error: 'Bad request.',
+        message: 'The document is malformed, has invalid or missing fields.',
+      });
+    }
+    else {
+      response.status(201).send({ ok: true });
     }
   } else {
     response.status(415).send({
@@ -120,13 +135,13 @@ function processReults(
     } else {
       const formattedResults: ResultAttributes[] = [];
       const testResults = parsedData['mcq-test-results']['mcq-test-result'];
-
       for (const testResult of testResults) {
         // TODO: refactor these type guards.
         if (
           !testResult ||
           !testResult.$ ||
           !testResult.$['scanned-on'] ||
+          !(new Date(testResult.$['scanned-on'])) ||
           !testResult['first-name'] ||
           testResult['first-name'].length !== 1 ||
           !testResult['last-name'] ||
@@ -142,11 +157,15 @@ function processReults(
           !testResult['summary-marks'][0].$.available ||
           !testResult['summary-marks'][0].$.available.length ||
           !testResult['summary-marks'][0].$.obtained ||
-          !testResult['summary-marks'][0].$.obtained.length
+          !testResult['summary-marks'][0].$.obtained.length ||
+          (Number(testResult['summary-marks'][0].$.obtained) > 
+              Number(testResult['summary-marks'][0].$.available))
         ) {
           reject(
             new Error('The document contains an entry with missing fields.')
           );
+
+          break;
         } else {
           const scannedOn = new Date(testResult.$['scanned-on']);
           const firstName = testResult['first-name'][0];
