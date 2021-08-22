@@ -31,3 +31,11 @@ export async function init(): Promise<void> {
     console.error('Unable to connect to the database:', error);
   }
 }
+
+/**
+ * This function closes the database connection. It is a convenience function
+ * meant to be used in tests.
+ */
+export async function close(): Promise<void> {
+  return sequelize.close();
+}
