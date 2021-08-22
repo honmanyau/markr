@@ -50,6 +50,7 @@ The assumptions below are numbered only so that they are easy to refer to — th
 These are assumptions on issues I realised during development and made in addition to those above.
 
 1. Upload size of the server is arbitrarily set to 256 MB. While there is no indication of what kind of upload size we should expect, it is worth noting that an entry of 20 answers is ~2 KB, so an upload limit of 256 MB should handle > 20000 entries containing 100 answers each.
+2. Based on the sample output provided for the `/results/:testId/aggregate` endpoint (`{"mean":65.0,"stddev":0.0,"min":65.0,"max":65.0,"p25":65.0,"p50":65.0,"p75":65.0,"count":1}`), the microservice returns the **population** standard deviation instead of, if I'm not mistaken, the arguably more appropriate **sample** standard deviation (which has degree of freedom `N - 1` and would produce `Infinity` in the case of a single entry).
 
 ## Design and Approach
 
