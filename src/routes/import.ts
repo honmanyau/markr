@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Response, Router } from 'express';
 import xml2js from 'xml2js';
 import {
   default as Result,
@@ -9,26 +9,16 @@ const router = Router();
 
 router.post('/', async (request, response) => {
   if (request.get('Content-Type') === 'text/xml+markr') {
-    const parsedXml = await parseMarkrXml(request.body).catch((_error) => {
-      response.status(400).send({
-        ok: false,
-        statusCode: 400,
-        error: 'Bad request.',
-        message: 'Please check that the request body is correctly formatted.',
-      });
+    let documentRejected = false;
+
+    const parsedXml = await parseMarkrXml(request.body).catch(() => {
+      documentRejected = true;
     });
 
     if (parsedXml) {
-      const processedEntries = await processReults(parsedXml).catch(
-        (_error) => {
-          response.status(400).send({
-            ok: false,
-            statusCode: 400,
-            error: 'Bad request.',
-            message: 'The document contains invalid or missing fields.',
-          });
-        }
-      );
+      const processedEntries = await processReults(parsedXml).catch(() => {
+        documentRejected = true;
+      });
 
       if (processedEntries) {
         for (const processedEntry of processedEntries) {
@@ -74,9 +64,19 @@ router.post('/', async (request, response) => {
             await Result.create(processedEntry);
           }
         }
-
-        response.status(201).send({ ok: true });
       }
+    }
+
+    if (documentRejected) {
+      response.status(400).send({
+        ok: false,
+        statusCode: 400,
+        error: 'Bad request.',
+        message: 'The document is malformed, has invalid or missing fields.',
+      });
+    }
+    else {
+      response.status(201).send({ ok: true });
     }
   } else {
     response.status(415).send({
