@@ -7,21 +7,31 @@ import {
  * This function creates an XML document as a string given a set of parameters
  * that matches those present in the sample data.
  * 
- * @param {[]}
+ * @param {EntryAttributes[]} entries The data to create an entries with.
+ * @returns {string} A string that represents the XML structure of the
+ *     `<mcq-test-result>` (note: singular) element.
  */
-export function createDocument(): string {
-  return '';
+export function createDocument(entries: EntryAttributes[]): string {
+  let xmlString = '<mcq-test-results>\n';
+
+  for (const entry of entries) {
+    xmlString += createEntry(entry) + '\n';
+  }
+
+  xmlString += '</mcq-test-results>';
+
+  return xmlString;
 }
 
 /**
  * This function creates an XML document as a string given a set of parameters
  * that matches those present in the sample data.
  * 
- * @param {ResultAttributes} entry The data to create an entry with.
+ * @param {EntryAttributes} entry The data to create an entry with.
  * @returns {string} A string that represents the XML structure of the
  *     `<mcq-test-result>` (note: singular) element.
  */
- export function createEntry(entry: ResultAttributes): string {
+ export function createEntry(entry: EntryAttributes): string {
   const scannedOn = new Date(entry.scannedOn).toISOString();
   const {
     firstName,
@@ -42,3 +52,8 @@ export function createDocument(): string {
     `</mcq-test-result>`,
   ].join('\n')
 }
+
+// ===========
+// == Types ==
+// ===========
+type EntryAttributes = Omit<ResultAttributes, 'percentageMark'>;
