@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { Result } from '../../database/models';
+import * as stats from '../lib/stats';
 
 const router = Router();
 
@@ -14,15 +15,14 @@ router.get('/:testId/aggregate', async (request, response) => {
       .map((v) => v.percentageMark)
       .sort((a, b) => a - b);
 
-    // TODO: handle statistics.
-    const mean = -1;
-    const count = -1;
-    const p25 = -1;
-    const p50 = -1;
-    const p75 = -1;
-    const min = -1;
-    const max = -1;
-    const stddev = -1;
+    const mean = stats.mean(percentageMarks);
+    const count = percentageMarks.length;
+    const p25 = stats.nearestRankPercentile(percentageMarks, 0.25);
+    const p50 = stats.nearestRankPercentile(percentageMarks, 0.50);
+    const p75 = stats.nearestRankPercentile(percentageMarks, 0.75);
+    const min = Math.min(...percentageMarks);
+    const max = Math.max(...percentageMarks);
+    const stddev = stats.sampleStddev(percentageMarks);
 
     response.status(200).send({
       testId,
