@@ -63,8 +63,20 @@ describe('GET /results/:testId/aggregate', () => {
             return done(error);
           }
 
+          const expected = {
+            testId: '9863',
+            mean: 65.0,
+            count: 1,
+            p25: 65.0,
+            p50: 65.0,
+            p75: 65.0,
+            min: 65.0,
+            max: 65.0,
+            stddev: 0,
+          };
+
           // TODO: check that data returned matches expectation.
-          expect(response).toEqual({});
+          expect(expected).toEqual(response.body);
 
           return done();
         });
