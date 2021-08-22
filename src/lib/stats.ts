@@ -5,11 +5,13 @@
  * @returns {number} The mean of the values in the input array.
  */
 export function mean(nums: number[]): number {
-  throwIfEmpty(nums);
+  throwIfEmpty(nums, 'mean()');
 
-  let sum = -Infinity;
+  const result = sum(nums) / nums.length;
+  
+  validateNumber(result, 'mean()');
 
-  return sum;
+  return result;
 }
 
 /**
