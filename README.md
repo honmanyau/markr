@@ -12,7 +12,7 @@ This document describes the prototype of the data processing and storage microse
 - [Additional Assumptions](#additional-assumptions)
 - [Design and Approach](#design-and-approach)
   - [Endpoints](#endpoints)
-  - [Data models](#data-models)
+  - [Data Models](#data-models)
   - [Tech Stack](#tech-stack)
     - [Server](#server)
     - [Database](#databse)
@@ -78,7 +78,7 @@ The microservice will have the following endpoints and methods:
     - (Optional) If time allows, we will also implement standard deviation, minimum and maximum. These are not explicitly stated in the requirements, but would be nice to have (I also just realised maybe I was supposed to ask questions about this?).
     - (Optional) If time allows, implementing some sort of caching mechanism here would be nice.
 
-### Data models
+### Data Models
 
 For storing scanned results at the `/import` `POST` endpoint:
 
@@ -89,8 +89,8 @@ For storing scanned results at the `/import` `POST` endpoint:
 │    + scannedOn         │
 │ PK + studentNumber     │
 │ PK + testId            │
-│    + firstName         │
-│    + lastName          │
+│ PK + firstName         │
+│ PK + lastName          │
 │    + availableMarks    │
 │    + obtainedMarks     │
 │    + percentageMark    │
