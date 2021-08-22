@@ -135,13 +135,13 @@ function processReults(
     } else {
       const formattedResults: ResultAttributes[] = [];
       const testResults = parsedData['mcq-test-results']['mcq-test-result'];
-
       for (const testResult of testResults) {
         // TODO: refactor these type guards.
         if (
           !testResult ||
           !testResult.$ ||
           !testResult.$['scanned-on'] ||
+          !(new Date(testResult.$['scanned-on'])) ||
           !testResult['first-name'] ||
           testResult['first-name'].length !== 1 ||
           !testResult['last-name'] ||
@@ -158,12 +158,14 @@ function processReults(
           !testResult['summary-marks'][0].$.available.length ||
           !testResult['summary-marks'][0].$.obtained ||
           !testResult['summary-marks'][0].$.obtained.length ||
-          (testResult['summary-marks'][0].$.obtained > 
-            testResult['summary-marks'][0].$.available)
+          (Number(testResult['summary-marks'][0].$.obtained) > 
+              Number(testResult['summary-marks'][0].$.available))
         ) {
           reject(
             new Error('The document contains an entry with missing fields.')
           );
+
+          break;
         } else {
           const scannedOn = new Date(testResult.$['scanned-on']);
           const firstName = testResult['first-name'][0];
