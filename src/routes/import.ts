@@ -69,10 +69,14 @@ router.post('/', async (request, response) => {
       }
     }
 
-    if (documentRejected) {
+    if (process.env.NODE_ENV !== 'test' && documentRejected) {
       const hash = Math.random().toString(36).slice(2, 8);
       const filename = `${Date.now()}_${hash}.txt`;
-      const fileDir = path.join(process.cwd(), 'rejected');
+      const fileDir = path.join(
+        process.cwd(),
+        'rejected',
+        process.env.NODE_ENV === 'development' ? 'dev' : ''
+      );
       const filePath = path.join(fileDir, filename);
 
       await fs.promises.readdir(fileDir).catch((_error) => {
