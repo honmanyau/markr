@@ -1,10 +1,9 @@
-import { formatTestResults } from '@jest/test-result';
 import { Router } from 'express';
 import xml2js from 'xml2js';
 import {
   default as Result,
   ResultAttributes,
-} from '../../database/models/Result';
+} from '../database/models/Result';
 
 const router = Router();
 
