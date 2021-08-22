@@ -21,3 +21,16 @@ RUN npm ci
 COPY . .
 
 CMD [ "npm", "run", "dev" ]
+
+# ================
+# == Production ==
+# ================
+FROM development AS production
+
+ENV NODE_ENV=production
+
+RUN npm run test
+RUN npm run build
+RUN npm ci --production
+
+CMD [ "npm", "run", "start" ]
