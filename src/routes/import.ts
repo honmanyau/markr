@@ -32,27 +32,42 @@ router.post('/', async (request, response) => {
 
       if (formattedResults) {
         for (const formattedResult of formattedResults) {
-          const { testId, studentNumber } = formattedResult;
+          const {
+            testId,
+            studentNumber,
+            firstName,
+            lastName
+          } = formattedResult;
+
           const record = await Result.findOne({
             where: {
               testId,
               studentNumber,
+              firstName,
+              lastName,
             },
           });
 
           if (record) {
+            let shouldUpdate = false;
+            
             if (formattedResult.availableMarks > record.availableMarks) {
-              await record.update({
-                availableMarks: formattedResult.availableMarks,
-                obtainedMarks: formattedResult.obtainedMarks,
-              });
+              shouldUpdate = true;
             } else if (
               formattedResult.availableMarks === record.availableMarks &&
               formattedResult.obtainedMarks > record.obtainedMarks
             ) {
+              shouldUpdate = true;
+            }
+
+            if (shouldUpdate) {
+              const { availableMarks, obtainedMarks } = formattedResult;
+              const percentageMark = obtainedMarks / availableMarks * 100;
+
               await record.update({
-                availableMarks: formattedResult.availableMarks,
-                obtainedMarks: formattedResult.obtainedMarks,
+                availableMarks,
+                obtainedMarks,
+                percentageMark,
               });
             }
           } else {
