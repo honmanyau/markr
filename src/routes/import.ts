@@ -18,6 +18,8 @@ router.post('/', async (request, response) => {
     });
 
     if (parsedXml) {
+      // Value validation happens in `processReults` as the entire document
+      // needs to be rejected even if there are issues with only one entry.
       const processedEntries = await processReults(parsedXml).catch(() => {
         documentRejected = true;
       });
