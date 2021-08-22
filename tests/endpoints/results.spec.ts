@@ -63,9 +63,10 @@ describe('GET /results/:testId/aggregate', () => {
             return done(error);
           }
 
-          // TODO: check that data matches expectation.
+          // TODO: check that data returned matches expectation.
+          expect(response).toEqual({});
 
-          return done('fail'); // TODO: remove forced failure when implemented.
+          return done();
         });
       });
     });
