@@ -7,7 +7,7 @@ const router = Router();
 router.get('/:testId/aggregate', async (request, response) => {
   const testId = request.params.testId;
   const results = await Result.findAll({
-    where: { testId }
+    where: { testId },
   });
 
   if (results.length > 0) {
@@ -18,7 +18,7 @@ router.get('/:testId/aggregate', async (request, response) => {
     const mean = stats.mean(percentageMarks);
     const count = percentageMarks.length;
     const p25 = stats.nearestRankPercentile(percentageMarks, 0.25);
-    const p50 = stats.nearestRankPercentile(percentageMarks, 0.50);
+    const p50 = stats.nearestRankPercentile(percentageMarks, 0.5);
     const p75 = stats.nearestRankPercentile(percentageMarks, 0.75);
     const min = Math.min(...percentageMarks);
     const max = Math.max(...percentageMarks);
@@ -35,8 +35,7 @@ router.get('/:testId/aggregate', async (request, response) => {
       max,
       stddev,
     });
-  }
-  else {
+  } else {
     response.status(404).send({
       ok: false,
       statusCode: 404,
