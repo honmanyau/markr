@@ -65,10 +65,11 @@ describe('src/lib/stats', () => {
 
     it(
       'should throw an error if the percentile, n, specified is not a number'
-      + ' that satisifies the condition 0 ≤ n ≤ 1',
+      + ' that satisifies the condition 0 < n ≤ 1',
       () => {
         expect(() => nearestRankPercentile([], -1)).toThrow();
         expect(() => nearestRankPercentile([], -0.01)).toThrow();
+        expect(() => nearestRankPercentile([], 0)).toThrow();
         expect(() => nearestRankPercentile([], 1.01)).toThrow();
         expect(() => nearestRankPercentile([], 2)).toThrow();
       }
