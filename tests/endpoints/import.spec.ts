@@ -1,7 +1,22 @@
+import { Server } from 'http';
 import supertest from 'supertest';
-import app from '../../src';
+import { TEST_SERVER_PORT } from '../../markr.config';
+import { app, database } from '../../src';
 
 describe('POST /import', () => {
+  let server: Server;
+
+  beforeAll(async () => {
+    await database.init();
+
+    server = app.listen(TEST_SERVER_PORT);
+  });
+
+  afterAll(async () => {
+    await database.close();
+    await server.close();
+  });
+
   it('should reject requests with incorrect Content-Type with status code 415', (done) => {
     supertest(app)
       .post('/import')
