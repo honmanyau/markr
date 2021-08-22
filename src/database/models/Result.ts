@@ -38,11 +38,11 @@ export default class Result
           type: DataTypes.STRING,
         },
         firstName: {
-          allowNull: false,
+          primaryKey: true,
           type: DataTypes.STRING,
         },
         lastName: {
-          allowNull: false,
+          primaryKey: true,
           type: DataTypes.STRING,
         },
         availableMarks: {
