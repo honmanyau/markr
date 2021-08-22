@@ -6,7 +6,7 @@
  */
 export function mean(nums: number[]): number {
   throwIfEmpty(nums);
-  
+
   let sum = -Infinity;
 
   return sum;
@@ -49,7 +49,7 @@ export function nearestRankPercentile(nums: number[], n: number): number {
  * @returns {number} The sum of all numbers in the input array.
  */
  export function sum(nums: number[]): number {
-  throwIfEmpty(nums);
+  throwIfEmpty(nums, 'sum()');
 
   let result = 0;
 
@@ -57,13 +57,7 @@ export function nearestRankPercentile(nums: number[], n: number): number {
     result += num;
   }
 
-  if (
-    !Number.isFinite(result) ||
-    Number.isNaN(result) ||
-    typeof result !== 'number'
-  ) {
-    throw new Error('sum() only accepts a non-empty array of numbers.');
-  }
+  validateNumber(result, 'sum()');
 
   return result;
 }
@@ -108,6 +102,23 @@ export function nearestRankPercentile(nums: number[], n: number): number {
  */
 function throwIfEmpty(arr: any[], name = 'This function') {
   if (arr.length === 0) {
+    throw new Error(`${name} only accepts a non-empty array of numbers.`);
+  }
+}
+
+/**
+ * This function throws an error if the given number is not a number.
+ * 
+ * @param {any} value A value that is supposed to be a number.
+ * @param {string} [name="This function"] An optional parameter for
+ *     specifying the name of the function that is throwing an error.
+ */
+ function validateNumber(value: number, name = 'This function') {
+  if (
+    !Number.isFinite(value) ||
+    Number.isNaN(value) ||
+    typeof value !== 'number'
+  ) {
     throw new Error(`${name} only accepts a non-empty array of numbers.`);
   }
 }
