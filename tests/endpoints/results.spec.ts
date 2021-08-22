@@ -324,9 +324,10 @@ describe('GET /results/:testId/aggregate', () => {
     });
 
   it(
-    'When duplication occurs, a higher available mark will always lead to an,'
-    + ' update regardless of what the previous obtained mark is. This case'
-    + ' tests for both higher available and obtained',
+    'should give updated statistics when presented with a new record with the'
+    + ' same test ID, student number, first name and last name; and has a'
+    + ' higher available mark. This cases tests for both higher available and'
+    + ' obtained marks',
     (done) => {
       const entry4 = {
         ...entry1,
@@ -376,9 +377,10 @@ describe('GET /results/:testId/aggregate', () => {
     });
 
   it(
-    'When duplication occurs, a higher available mark will always lead to an,'
-    + ' update regardless of what the previous obtained mark is. This case'
-    + ' tests for a higher available and equal obtained',
+    'should give updated statistics when presented with a new record with the'
+    + ' same test ID, student number, first name and last name; and has a'
+    + ' higher available mark. This cases tests for a higher available mark and'
+    + ' a equal obtained mark',
     (done) => {
       const entry4 = {
         ...entry1,
@@ -427,9 +429,10 @@ describe('GET /results/:testId/aggregate', () => {
     });
 
   it(
-    'When duplication occurs, a higher available mark will always lead to an,'
-    + ' update regardless of what the previous obtained mark is. This case'
-    + ' tests for a higher available and a lower obtained',
+    'should give updated statistics when presented with a new record with the'
+    + ' same test ID, student number, first name and last name; and has a'
+    + ' higher available mark. This cases tests for a higher available mark and'
+    + ' a lower obtained mark',
     (done) => {
       const entry4 = {
         ...entry1,
@@ -479,10 +482,9 @@ describe('GET /results/:testId/aggregate', () => {
     });
 
   it(
-    'When duplication occurs, if the available mark is the same but the,'
-    + ' obtained mark is different, an update should only occur when'
-    + ' the new obtained > old obtained. This case test for new obtained >'
-    + ' old obtained',
+    'should give updated statistics when presented with a new record '
+    + ' with the same test ID, student number, first name and last name; and'
+    + ' has a higher obtained mark and a equal available mark.',
     (done) => {
       const entry4 = {
         ...entry1,
@@ -530,10 +532,9 @@ describe('GET /results/:testId/aggregate', () => {
     });
 
   it(
-    'When duplication occurs, if the available mark is the same but the,'
-    + ' obtained mark is different, an update should only occur when'
-    + ' the new obtained > old obtained. This case test for new obtained <'
-    + ' old obtained, where no update should occur',
+    'should retain previous statistics when presented with a new record'
+    + ' with the same test ID, student number, first name and last name; and'
+    + ' has a higher obtained mark and a equal available mark.',
     (done) => {
       const entry4 = {
         ...entry1,
@@ -581,8 +582,8 @@ describe('GET /results/:testId/aggregate', () => {
     });
 
   it(
-    'Entries with the same test ID and student numbers but different names...'
-    + ' ARGH. BUG FIX.',
+    'An entry with the same test ID and student number but different first name'
+    + ' and/or last name should lead to the creation of a new record',
     (done) => {
       const entry4 = {
         ...entry1,
