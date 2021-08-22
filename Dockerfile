@@ -3,7 +3,7 @@
 
 FROM node:14 AS base
 
-WORKDIR /usr/src/markr
+WORKDIR /usr/node/markr
 
 COPY package.json .
 COPY package-lock.json .
@@ -27,9 +27,10 @@ CMD [ "npm", "run", "dev" ]
 # ================
 FROM development AS production
 
+RUN npm run test
+
 ENV NODE_ENV=production
 
-RUN npm run test
 RUN npm run build
 RUN npm ci --production
 
