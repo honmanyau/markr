@@ -71,7 +71,7 @@ router.post('/', async (request, response) => {
               });
             }
           } else {
-            const created = await Result.create(processedEntry);
+            await Result.create(processedEntry);
           }
         }
 
