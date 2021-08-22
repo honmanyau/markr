@@ -1,0 +1,23 @@
+# Builds
+build
+
+# Dependencies
+node_modules
+
+# Logs
+npm-debug.log
+
+# Miscellaneous
+.git
+.DS_Store
+.vscode
+
+# Tests
+coverage
+
+# .env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
