@@ -26,11 +26,20 @@ export function mean(nums: number[]): number {
  * @returns {number} The n-th percentile of the input array.
  */
 export function nearestRankPercentile(nums: number[], n: number): number {
-  throwIfEmpty(nums);
+  throwIfEmpty(nums, 'nearestRankPercentile()');
 
-  let sum = -Infinity;
+  const sortedNums = [ ...nums ].sort((a, b) => a - b);
 
-  return sum;
+  if (n <= 0 || n > 1) {
+    throw Error(
+      'nearestRankPercentile() only accepts the desired percentile, n, that'
+      + ' satisifies the condition 0 < n ≤ 1.'
+    );
+  };
+
+  const ordinalRank = Math.ceil(n * nums.length);
+
+  return nums[ordinalRank - 1];
 }
 
 // /**
