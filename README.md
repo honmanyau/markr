@@ -7,8 +7,6 @@ This document describes the prototype of the data processing and storage microse
 ## Table of Contents
 
 - [Quick Start](#quick-start)
-  - [With Docker Compose](#with-docker-compose)
-  - [With NPM](#with-npm)
 - [Development](#development)
 - [Assumptions](#assumptions)
 - [Additional Assumptions](#additional-assumptions)
