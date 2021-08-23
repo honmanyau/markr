@@ -6,8 +6,10 @@ This document describes the prototype of the data processing and storage microse
 
 ## Table of Contents
 
-- [Installation](#installation)
 - [Quick Start](#quick-start)
+  - [With Docker Compose](#with-docker-compose)
+  - [With NPM](#with-npm)
+- [Development](#development)
 - [Assumptions](#assumptions)
 - [Additional Assumptions](#additional-assumptions)
 - [Design and Approach](#design-and-approach)
@@ -24,9 +26,67 @@ This document describes the prototype of the data processing and storage microse
 - [Closing Remarks](#closing-remarks)
 - [Unorganised](#unorganised)
 
-## Installation
-
 ## Quick Start
+
+Clone this repository;
+
+```sh
+git clone https://github.com/honmanyau/markr
+cd markr
+```
+### With Docker Compose
+
+```sh
+# Development:
+docker-compose up --detach
+
+# Production:
+docker-compose up -f docker-compose.production.yml --detach
+
+# Test *only*:
+docker-compose run markr-dev npm run test
+docker-compose run markr-dev npm run test:verbose
+docker-compose run markr-dev npm run test:with-coverage
+```
+
+### With NPM
+
+```sh
+npm i
+
+# Development:
+npm run dev
+
+# Production:
+npm run build && npm run start # OR npm run start:build
+
+# Test *only*:
+npm run test
+npm run test:verbose
+npm run test:with-coverage
+```
+
+## Development
+
+The development server runs with the help of [`nodemon`](https://nodemon.io). Given that our [Docker Compose file](./docker-compose.yml) bind mounts the host directory to the container's project root, any changes made locally will be reflected on the development server.
+
+To see output on the development server if running detached:
+
+```sh
+docker logs markr-dev
+```
+
+Alternatively, start the development server without the `--detach` flag, or use NPM.
+
+A list of potentially useful scripts are available in [`package.json`](./package.json). To run these scripts, using linting script as an example:
+
+```sh
+# With npm
+npm run lint
+
+# With docker-compose
+docker-compose run markr-dev npm run lint
+```
 
 ## Assumptions
 
