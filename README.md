@@ -75,7 +75,7 @@ npm run test:with-coverage
 Once the server is up and running:
 
 ```sh
-# Testing that server is up and running
+# Testing that server is up and running:
 curl http://localhost:4567
 
 # Status Code: 200
@@ -99,7 +99,7 @@ XML
 # Output: {"ok":true}
 
 
-# Testing the '/import' endpoint with by POST-ing a malformed document.
+# Testing the '/import' endpoint with by POST-ing a malformed document:
 curl -X POST -H 'Content-Type: text/xml+markr' http://localhost:4567/import -d @- <<XML
   <mcq-test-results>
     <mcq-test-result scanned-on="2017-12-04T12:12:10+11:00">
@@ -116,7 +116,7 @@ XML
 # Output: {"ok":false,"statusCode":400,"error":"Bad request.","message":"The document is malformed, has invalid or missing fields."}
 
 
-# Testing the '/result/:testId/aggregate' endpoint
+# Testing the '/result/:testId/aggregate' endpoint:
 curl http://localhost:4567/results/1007/aggregate
 
 # Status Code: 200
