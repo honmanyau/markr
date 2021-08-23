@@ -21,7 +21,6 @@ This document describes the prototype of the data processing and storage microse
 - [Potential Extensions](#potential-extensions)
 - [Beginning Remarks](#beginning-remarks)
 - [Concluding Remarks](#concluding-remarks)
-- [Unorganised](#unorganised)
 - [Originality Statement](#originality-statement)
 
 ## Quick Start
