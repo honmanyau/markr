@@ -40,7 +40,7 @@ docker-compose up --detach
 
 
 # Production:
-docker-compose up -f docker-compose.production.yml --detach
+docker-compose -f docker-compose.production.yml up --detach
 
 
 # Test *only*:
