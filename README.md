@@ -108,7 +108,7 @@ curl -X POST -H 'Content-Type: text/xml+markr' http://localhost:4567/import -d @
       <student-number>4224</student-number>
       <test-id>1007</test-id>
       <summary-marks available="20" obtained="19" />
-    </mcq-test-result>
+    </mcq-test->
   </mcq-test-results>
 XML
 
