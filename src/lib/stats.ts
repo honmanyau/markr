@@ -1,5 +1,3 @@
-import { validate } from '@babel/types';
-
 /**
  * This function calculates and returns the mean of the numbers in an array.
  *
