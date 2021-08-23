@@ -1,6 +1,6 @@
 import { Server } from 'http';
 import supertest from 'supertest';
-import { TEST_SERVER_PORT } from '../../markr.config';
+import { TEST_SERVER_PORT } from '../../src/config';
 import { app, database } from '../../src';
 import { createDocument } from '../utils';
 

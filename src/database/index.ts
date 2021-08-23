@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { PRODUCTION_DB } from '../../markr.config';
+import { PRODUCTION_DB } from '../../src/config';
 import * as models from './models';
 
 export const sequelize = new Sequelize({
