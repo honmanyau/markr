@@ -8,9 +8,11 @@
     "build:post": "rm build/**/*.ts",
     "build:pre": "rm -rf build",
     "dev": "NODE_ENV=development nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
-    "format": "prettier --write .",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
     "lint": "eslint . --ext .ts",
     "start": "NODE_ENV=production node ./build/index.js",
+    "start:build": "npm run build && npm run start",
     "test": "NODE_ENV=test jest --silent --runInBand tests",
     "test:verbose": "NODE_ENV=test jest --verbose --runInBand tests",
     "test:with-coverage": "NODE_ENV=test jest --coverage --runInBand tests"
