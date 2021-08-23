@@ -1,12 +1,12 @@
 import {
   default as Result,
-  ResultAttributes
+  ResultAttributes,
 } from '../../src/database/models/Result';
 
 /**
  * This function creates an XML document as a string given a set of parameters
  * that matches those present in the sample data.
- * 
+ *
  * @param {EntryAttributes[]} entries The data to create an entries with.
  * @returns {string} A string that represents the XML structure of the
  *     `<mcq-test-result>` (note: singular) element.
@@ -26,12 +26,12 @@ export function createDocument(entries: EntryAttributes[]): string {
 /**
  * This function creates an XML document as a string given a set of parameters
  * that matches those present in the sample data.
- * 
+ *
  * @param {EntryAttributes} entry The data to create an entry with.
  * @returns {string} A string that represents the XML structure of the
  *     `<mcq-test-result>` (note: singular) element.
  */
- export function createEntry(entry: EntryAttributes): string {
+export function createEntry(entry: EntryAttributes): string {
   const scannedOn = new Date(entry.scannedOn).toISOString();
   const {
     firstName,
@@ -50,7 +50,7 @@ export function createDocument(entries: EntryAttributes[]): string {
     `<test-id>${testId}</test-id>`,
     `<summary-marks available="${available}" obtained="${obtained}" />`,
     `</mcq-test-result>`,
-  ].join('\n')
+  ].join('\n');
 }
 
 // ===========

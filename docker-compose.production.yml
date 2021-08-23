@@ -11,7 +11,7 @@ services:
       - NODE_ENV=production
       - PORT=4567
     ports:
-      - "4567:4567"
+      - '4567:4567'
     volumes:
       - ./database:/usr/node/markr/database
       - ./rejected:/usr/node/markr/rejected

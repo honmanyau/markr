@@ -34,6 +34,7 @@ Clone this repository;
 git clone https://github.com/honmanyau/markr
 cd markr
 ```
+
 ### With Docker Compose
 
 ```sh
@@ -94,13 +95,11 @@ The assumptions below are numbered only so that they are easy to refer to — th
 
 1. A valid document refers to an XML document that, apart from the document header, begins with the `<mcq-test-results>` tag and ends with the `</mcq-test-results>` closing tag. Every entry within the `<mcq-test-results>` element must also be valid.
 2. A valid entry, as referred to in (1), begins with the `<mcq-test-result>` tag and ends with the `</mcq-test-result>` tag. The `<mcq-test-result>` element must contain the `scanned-on` attribute with a validate datetime string (parsing with `new Date()` does not return `Invalidate Date`). In addition, it must contain the following children:
-
-- `<first-name>`
-- `<last-name>`
-- `<student-number>`
-- `<test-id>`
-- `<summary-marks available="number" obtained="number" />` (self-closing), where `available` is >= `obtained`, non-null, and > 0.
-
+   - `<first-name>`
+   - `<last-name>`
+   - `<student-number>`
+   - `<test-id>`
+   - `<summary-marks available="number" obtained="number" />` (self-closing), where `available` is >= `obtained`, non-null, and > 0.
 3. "A document missing some important bits" in the requirements describes violation of either (1) or (2), and the entire document will be rejected and handled accordingly.
 4. The scores given in `<summary-marks>` are always "correct". The microservice will not perform any validation against `<answer>` elements. This is obviously problematic for answers such as that given in the example in the requirements: `<answer question="4 marks-available="1" marks-awarded="1">AC</answer>`; but this implementation wil not handle such cases for scope reasons (and that the boss says it's okay — even though the boss may not be always right).
 5. The microservice will not store results for individual answers described by the `<answer>` elements.

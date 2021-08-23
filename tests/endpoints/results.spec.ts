@@ -53,8 +53,7 @@ describe('GET /results/:testId/aggregate', () => {
     await server.close();
   });
 
-  it('should return a 404 if the test ID given does not exist in the database',
-  (done) => {
+  it('should return a 404 if the test ID given does not exist in the database', (done) => {
     supertest(app)
       .get('/results/42x24/aggregate')
       .expect(404)
@@ -68,16 +67,14 @@ describe('GET /results/:testId/aggregate', () => {
   });
 
   it(
-    'should return a response with statistics and status code 200 for'
-    + ' a valid test ID, with the correct statistics where the test ID'
-    + ' only has 1 entry',
+    'should return a response with statistics and status code 200 for' +
+      ' a valid test ID, with the correct statistics where the test ID' +
+      ' only has 1 entry',
     (done) => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1
-        ]))
+        .send(createDocument([entry1]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -89,8 +86,9 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio1 = entry1.obtainedMarks / entry1.availableMarks * 100;
-              const stddev = stats.populationStddev([ ratio1 ]);
+              const ratio1 =
+                (entry1.obtainedMarks / entry1.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio1]);
               const expected = {
                 testId: entry1.testId,
                 mean: ratio1,
@@ -108,19 +106,18 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should return a response with statistics and status code 200 for'
-    + ' a valid test ID, with the correct statistics where the test ID'
-    + ' only has 1 entry (different to the previous test)',
+    'should return a response with statistics and status code 200 for' +
+      ' a valid test ID, with the correct statistics where the test ID' +
+      ' only has 1 entry (different to the previous test)',
     (done) => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry2
-        ]))
+        .send(createDocument([entry2]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -132,8 +129,9 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio2 = entry2.obtainedMarks / entry2.availableMarks * 100;
-              const stddev = stats.populationStddev([ ratio2 ]);
+              const ratio2 =
+                (entry2.obtainedMarks / entry2.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio2]);
               const expected = {
                 testId: entry2.testId,
                 mean: ratio2,
@@ -151,20 +149,18 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should return a response with statistics and status code 200 for'
-    + ' a valid test ID, with the correct statistics where the test ID'
-    + ' with has 2 entries',
+    'should return a response with statistics and status code 200 for' +
+      ' a valid test ID, with the correct statistics where the test ID' +
+      ' with has 2 entries',
     (done) => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry2,
-        ]))
+        .send(createDocument([entry1, entry2]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -176,13 +172,15 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio1 = entry1.obtainedMarks / entry1.availableMarks * 100;
-              const ratio2 = entry2.obtainedMarks / entry2.availableMarks * 100;
-              const marks = [ ratio1, ratio2 ];
+              const ratio1 =
+                (entry1.obtainedMarks / entry1.availableMarks) * 100;
+              const ratio2 =
+                (entry2.obtainedMarks / entry2.availableMarks) * 100;
+              const marks = [ratio1, ratio2];
               const mean = stats.mean(marks);
               const count = marks.length;
               const p25 = stats.nearestRankPercentile(marks, 0.25);
-              const p50 = stats.nearestRankPercentile(marks, 0.50);
+              const p50 = stats.nearestRankPercentile(marks, 0.5);
               const p75 = stats.nearestRankPercentile(marks, 0.75);
               const min = Math.min(...marks);
               const max = Math.max(...marks);
@@ -204,21 +202,18 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should return a response with statistics and status code 200 for'
-    + ' a valid test ID, with the correct statistics where the test ID'
-    + ' with has 3 entries',
+    'should return a response with statistics and status code 200 for' +
+      ' a valid test ID, with the correct statistics where the test ID' +
+      ' with has 3 entries',
     (done) => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry2,
-          entry3,
-        ]))
+        .send(createDocument([entry1, entry2, entry3]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -230,14 +225,17 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio1 = entry1.obtainedMarks / entry1.availableMarks * 100;
-              const ratio2 = entry2.obtainedMarks / entry2.availableMarks * 100;
-              const ratio3 = entry3.obtainedMarks / entry3.availableMarks * 100;
-              const marks = [ ratio1, ratio2, ratio3 ];
+              const ratio1 =
+                (entry1.obtainedMarks / entry1.availableMarks) * 100;
+              const ratio2 =
+                (entry2.obtainedMarks / entry2.availableMarks) * 100;
+              const ratio3 =
+                (entry3.obtainedMarks / entry3.availableMarks) * 100;
+              const marks = [ratio1, ratio2, ratio3];
               const mean = stats.mean(marks);
               const count = marks.length;
               const p25 = stats.nearestRankPercentile(marks, 0.25);
-              const p50 = stats.nearestRankPercentile(marks, 0.50);
+              const p50 = stats.nearestRankPercentile(marks, 0.5);
               const p75 = stats.nearestRankPercentile(marks, 0.75);
               const min = Math.min(...marks);
               const max = Math.max(...marks);
@@ -259,28 +257,24 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should return a response with statistics and status code 200 for'
-    + ' a valid test ID, with the correct statistics for where the test ID'
-    + ' with has 3 entries. Entries in the database with different test IDs'
-    + ' should not interfere with the statistics',
+    'should return a response with statistics and status code 200 for' +
+      ' a valid test ID, with the correct statistics for where the test ID' +
+      ' with has 3 entries. Entries in the database with different test IDs' +
+      ' should not interfere with the statistics',
     (done) => {
       const entry4 = {
         ...entry1,
-        testId: entry1.testId + 1
+        testId: entry1.testId + 1,
       };
 
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry2,
-          entry3,
-          entry4,
-        ]))
+        .send(createDocument([entry1, entry2, entry3, entry4]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -292,14 +286,17 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio1 = entry1.obtainedMarks / entry1.availableMarks * 100;
-              const ratio2 = entry2.obtainedMarks / entry2.availableMarks * 100;
-              const ratio3 = entry3.obtainedMarks / entry3.availableMarks * 100;
-              const marks = [ ratio1, ratio2, ratio3 ];
+              const ratio1 =
+                (entry1.obtainedMarks / entry1.availableMarks) * 100;
+              const ratio2 =
+                (entry2.obtainedMarks / entry2.availableMarks) * 100;
+              const ratio3 =
+                (entry3.obtainedMarks / entry3.availableMarks) * 100;
+              const marks = [ratio1, ratio2, ratio3];
               const mean = stats.mean(marks);
               const count = marks.length;
               const p25 = stats.nearestRankPercentile(marks, 0.25);
-              const p50 = stats.nearestRankPercentile(marks, 0.50);
+              const p50 = stats.nearestRankPercentile(marks, 0.5);
               const p75 = stats.nearestRankPercentile(marks, 0.75);
               const min = Math.min(...marks);
               const max = Math.max(...marks);
@@ -321,13 +318,14 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should give updated statistics when presented with a new record with the'
-    + ' same test ID, student number, first name and last name; and has a'
-    + ' higher available mark. This cases tests for both higher available and'
-    + ' obtained marks',
+    'should give updated statistics when presented with a new record with the' +
+      ' same test ID, student number, first name and last name; and has a' +
+      ' higher available mark. This cases tests for both higher available and' +
+      ' obtained marks',
     (done) => {
       const entry4 = {
         ...entry1,
@@ -338,10 +336,7 @@ describe('GET /results/:testId/aggregate', () => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry4,
-        ]))
+        .send(createDocument([entry1, entry4]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -353,8 +348,9 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio4 = entry4.obtainedMarks / entry4.availableMarks * 100;
-              const stddev = stats.populationStddev([ ratio4 ]);
+              const ratio4 =
+                (entry4.obtainedMarks / entry4.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio4]);
               const expected = {
                 testId: entry4.testId,
                 mean: ratio4,
@@ -374,26 +370,24 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should give updated statistics when presented with a new record with the'
-    + ' same test ID, student number, first name and last name; and has a'
-    + ' higher available mark. This cases tests for a higher available mark and'
-    + ' a equal obtained mark',
+    'should give updated statistics when presented with a new record with the' +
+      ' same test ID, student number, first name and last name; and has a' +
+      ' higher available mark. This cases tests for a higher available mark and' +
+      ' a equal obtained mark',
     (done) => {
       const entry4 = {
         ...entry1,
-        availableMarks: entry1.availableMarks + 1
+        availableMarks: entry1.availableMarks + 1,
       };
 
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry4,
-        ]))
+        .send(createDocument([entry1, entry4]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -405,8 +399,9 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio4 = entry4.obtainedMarks / entry4.availableMarks * 100;
-              const stddev = stats.populationStddev([ ratio4 ]);
+              const ratio4 =
+                (entry4.obtainedMarks / entry4.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio4]);
               const expected = {
                 testId: entry1.testId,
                 mean: ratio4,
@@ -426,27 +421,25 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should give updated statistics when presented with a new record with the'
-    + ' same test ID, student number, first name and last name; and has a'
-    + ' higher available mark. This cases tests for a higher available mark and'
-    + ' a lower obtained mark',
+    'should give updated statistics when presented with a new record with the' +
+      ' same test ID, student number, first name and last name; and has a' +
+      ' higher available mark. This cases tests for a higher available mark and' +
+      ' a lower obtained mark',
     (done) => {
       const entry4 = {
         ...entry1,
         available: entry1.availableMarks + 1,
-        obtained: entry1.obtainedMarks - 1
+        obtained: entry1.obtainedMarks - 1,
       };
 
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry4,
-        ]))
+        .send(createDocument([entry1, entry4]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -458,8 +451,9 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio4 = entry4.obtainedMarks / entry4.availableMarks * 100;
-              const stddev = stats.populationStddev([ ratio4 ]);
+              const ratio4 =
+                (entry4.obtainedMarks / entry4.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio4]);
               const expected = {
                 testId: entry1.testId,
                 mean: ratio4,
@@ -479,25 +473,23 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should give updated statistics when presented with a new record '
-    + ' with the same test ID, student number, first name and last name; and'
-    + ' has a higher obtained mark and a equal available mark.',
+    'should give updated statistics when presented with a new record ' +
+      ' with the same test ID, student number, first name and last name; and' +
+      ' has a higher obtained mark and a equal available mark.',
     (done) => {
       const entry4 = {
         ...entry1,
-        obtainedMarks: entry1.obtainedMarks + 1
+        obtainedMarks: entry1.obtainedMarks + 1,
       };
 
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry4,
-        ]))
+        .send(createDocument([entry1, entry4]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -509,8 +501,9 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio4 = entry4.obtainedMarks / entry4.availableMarks * 100;
-              const stddev = stats.populationStddev([ ratio4 ]);
+              const ratio4 =
+                (entry4.obtainedMarks / entry4.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio4]);
               const expected = {
                 testId: entry1.testId,
                 mean: ratio4,
@@ -529,25 +522,23 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'should retain previous statistics when presented with a new record'
-    + ' with the same test ID, student number, first name and last name; and'
-    + ' has a higher obtained mark and a equal available mark.',
+    'should retain previous statistics when presented with a new record' +
+      ' with the same test ID, student number, first name and last name; and' +
+      ' has a higher obtained mark and a equal available mark.',
     (done) => {
       const entry4 = {
         ...entry1,
-        obtainedMarks: entry1.obtainedMarks - 1
+        obtainedMarks: entry1.obtainedMarks - 1,
       };
 
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry4,
-        ]))
+        .send(createDocument([entry1, entry4]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -559,8 +550,9 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio1 = entry1.obtainedMarks / entry1.availableMarks * 100;
-              const stddev = stats.populationStddev([ ratio1 ]);
+              const ratio1 =
+                (entry1.obtainedMarks / entry1.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio1]);
               const expected = {
                 testId: entry1.testId,
                 mean: ratio1,
@@ -579,25 +571,23 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 
   it(
-    'An entry with the same test ID and student number but different first name'
-    + ' and/or last name should lead to the creation of a new record',
+    'An entry with the same test ID and student number but different first name' +
+      ' and/or last name should lead to the creation of a new record',
     (done) => {
       const entry4 = {
         ...entry1,
         firstName: 'Nadeshiko',
-        lastName: 'Nyanpasu'
+        lastName: 'Nyanpasu',
       };
 
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry4,
-        ]))
+        .send(createDocument([entry1, entry4]))
         .expect(201)
         .end(() => {
           supertest(app)
@@ -609,17 +599,19 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio1 = entry1.obtainedMarks / entry1.availableMarks * 100;
-              const ratio4 = entry4.obtainedMarks / entry4.availableMarks * 100;
-              const marks = [ ratio1, ratio4 ];
+              const ratio1 =
+                (entry1.obtainedMarks / entry1.availableMarks) * 100;
+              const ratio4 =
+                (entry4.obtainedMarks / entry4.availableMarks) * 100;
+              const marks = [ratio1, ratio4];
               const mean = stats.mean(marks);
               const count = marks.length;
               const p25 = stats.nearestRankPercentile(marks, 0.25);
-              const p50 = stats.nearestRankPercentile(marks, 0.50);
+              const p50 = stats.nearestRankPercentile(marks, 0.5);
               const p75 = stats.nearestRankPercentile(marks, 0.75);
               const min = Math.min(...marks);
               const max = Math.max(...marks);
-              const stddev = stats.populationStddev(marks)
+              const stddev = stats.populationStddev(marks);
               const expected = {
                 testId: entry1.testId,
                 mean,
@@ -637,5 +629,6 @@ describe('GET /results/:testId/aggregate', () => {
               return done();
             });
         });
-    });
+    }
+  );
 });
