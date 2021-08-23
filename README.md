@@ -19,12 +19,12 @@ This document describes the prototype of the data processing and storage microse
     - [Server](#server)
     - [Database](#databse)
     - [Testing](#testing)
-    - [Docker + Docker Compose](#docker-docker-compose)
+  - [Deployment](#deployment)
 - [Potential Extensions](#potential-extensions)
-- [Originality Statement](#originality-statement)
 - [Beginning Remarks](#beginning-remarks)
-- [Closing Remarks](#closing-remarks)
+- [Concluding Remarks](#concluding-remarks)
 - [Unorganised](#unorganised)
+- [Originality Statement](#originality-statement)
 
 ## Quick Start
 
@@ -196,13 +196,18 @@ We will use [Sequelize](https://sequelize.org) for interfacing Node.js and SQLit
 
 We will use the [Jest](https://jestjs.io) test framework for unit tests. Mostly chosen because of the ease to get it up and running, and that it can easily given an indication of how abysmal code coverage is without additional dependencies. We will also use [`supertest`](https://github.com/visionmedia/supertest) to help with testing endpoints.
 
-#### Docker + Docker Compose
+#### Deployment
 
-It's part of the requirements, nothing much to be said here and included for completeness!
+~~It's part of the requirements, nothing much to be said here and included for co mpleteness!~~
+
+Deployment is done using Docker Compose as stated in the requirement. The project directory contains a single `Dockerfile` that is set up to enable multi-stage builds. Two Docker Compose files are used to enable a development build ([`docker-compose.yml`](./docker-compose.yml)), and a production build ([`docker-compose.production.yml`](./docker-compose.yml), concatenated using the `-f` option).
 
 ## Potential Extensions
 
-## Originality Statement
+- Printing PDFs of those snail-mailed reports.
+- ~~Save rejected documents and~~ log the reason for rejecting.
+- Socket.io.
+- Implement/optimise request caching — I don't think I'll spend too much time thinking about it in the first pass.
 
 ## Beginning Remarks
 
@@ -230,14 +235,8 @@ The total time required for the tasks listed above is already 6 hours, and apply
 
 In any case, there is one way to move forward. The plan is to hack a fully functional prototype within 3 hours, and then incrementally address all of the requirements that are not met or of subpar qualities. Time to get started.
 
-## Closing Remarks
+## Concluding Remarks
 
-## Unorganised
+## Originality Statement
 
-These should probably go into extensions:
-
-- Fallback import handling.
-- Printing PDFs of those snail-mailed reports.
-- Save rejected documents and log the reason for rejecting.
-- Socket.io.
-- Implement/optimise request caching — I don't think I'll spend too much time thinking about it in the first pass.
+I hereby declare that this submission is my own work, and due references are made to code or ideas that heavily influenced this submission.
