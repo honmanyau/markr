@@ -1,9 +1,16 @@
 # Docker multistage reference:
 #   * https://docs.docker.com/develop/develop-images/multistage-build
+#
+# Installing sqlite3 on Alpine Linux:
+#   * https://stackoverflow.com/questions/62554991
+#   * https://www.geefire.eu.org/2021/02/20/alpine-nodejs-install-sqlite3.html
 
-FROM node:14 AS base
+FROM node:14.17-alpine AS base
 
 WORKDIR /usr/node/markr
+
+# Updating apk-tools due to docker scan flagging security issues with 2.10.6-r0.
+RUN apk add --update --no-cache python g++ make "apk-tools>2.10.7-r0"
 
 COPY package.json .
 COPY package-lock.json .

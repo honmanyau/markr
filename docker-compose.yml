@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  markr-development:
+  markr-dev:
     build:
       context: .
       target: development
-    image: markr-development
-    container_name: markr-development
+    image: markr-dev
+    container_name: markr-dev
     environment:
       - NODE_ENV=development
       - PORT=4567
