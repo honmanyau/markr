@@ -1,7 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import * as database from './database';
-import { SERVER_PORT, UPLOAD_LIMIT } from '../markr.config';
+import { SERVER_PORT, UPLOAD_LIMIT } from './config';
 import * as routes from './routes';
 
 const app = express();
