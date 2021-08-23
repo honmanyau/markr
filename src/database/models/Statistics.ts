@@ -94,7 +94,7 @@ export default class Statistics
 // ===========
 // == Types ==
 // ===========
-interface StatisticsAttributes {
+export interface StatisticsAttributes {
   testId: string;
   mean: number;
   count: number;

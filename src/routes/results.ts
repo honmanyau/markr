@@ -1,39 +1,25 @@
 import { Router } from 'express';
-import { Result } from '../database/models';
-import * as stats from '../lib/stats';
+import Statistics from '../database/models/Statistics';
 
 const router = Router();
 
 router.get('/:testId/aggregate', async (request, response) => {
   const testId = request.params.testId;
-  const results = await Result.findAll({
+  const record = await Statistics.findOne({
     where: { testId },
   });
 
-  if (results.length > 0) {
-    const percentageMarks = results
-      .map((v) => v.percentageMark)
-      .sort((a, b) => a - b);
-
-    const mean = stats.mean(percentageMarks);
-    const count = percentageMarks.length;
-    const p25 = stats.nearestRankPercentile(percentageMarks, 0.25);
-    const p50 = stats.nearestRankPercentile(percentageMarks, 0.5);
-    const p75 = stats.nearestRankPercentile(percentageMarks, 0.75);
-    const min = Math.min(...percentageMarks);
-    const max = Math.max(...percentageMarks);
-    const stddev = stats.populationStddev(percentageMarks);
-
+  if (record) {
     response.status(200).send({
       testId,
-      mean,
-      count,
-      p25,
-      p50,
-      p75,
-      min,
-      max,
-      stddev,
+      mean: record.mean,
+      count: record.count,
+      p25: record.p25,
+      p50: record.p50,
+      p75: record.p75,
+      min: record.min,
+      max: record.max,
+      stddev: record.stddev,
     });
   } else {
     response.status(404).send({
