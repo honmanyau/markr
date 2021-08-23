@@ -3,14 +3,16 @@ import { Router } from 'express';
 import path from 'path';
 import xml2js from 'xml2js';
 import { default as Result, ResultAttributes } from '../database/models/Result';
-import Statistics, { StatisticsAttributes } from '../database/models/Statistics';
+import Statistics, {
+  StatisticsAttributes,
+} from '../database/models/Statistics';
 import * as stats from '../lib/stats';
 
 const router = Router();
 
 router.post('/', async (request, response) => {
   if (request.get('Content-Type') === 'text/xml+markr') {
-    const testIdSeen: { [id: string]: true; } = {};
+    const testIdSeen: { [id: string]: true } = {};
     let documentRejected = false;
 
     const parsedXml = await parseMarkrXml(request.body).catch(() => {
@@ -99,15 +101,14 @@ router.post('/', async (request, response) => {
           where: { testId },
         });
         const existingStats = await Statistics.findOne({
-          where: { testId }
+          where: { testId },
         });
 
         const summary = summariseResults(results);
-        
+
         if (existingStats) {
           await existingStats.update(summary);
-        }
-        else {
+        } else {
           await Statistics.create({
             testId,
             ...summary,
@@ -240,26 +241,17 @@ function processReults(
 /**
  * This function create a statistics summary of an array of Result records
  * with the same test ID.
- * 
+ *
  * @param {Results[]} results An array of `Result`s.
  * @returns {StatisticsAttributes} Statistics summary of the records provided.
  */
- function summariseResults(
+function summariseResults(
   records: Result[]
 ): Omit<StatisticsAttributes, 'testId'> {
   const percentageMarks = records
     .map((v) => v.percentageMark)
     .sort((a, b) => a - b);
 
-  const mean = stats.mean(percentageMarks);
-  const count = percentageMarks.length;
-  const p25 = stats.nearestRankPercentile(percentageMarks, 0.25);
-  const p50 = stats.nearestRankPercentile(percentageMarks, 0.5);
-  const p75 = stats.nearestRankPercentile(percentageMarks, 0.75);
-  const min = Math.min(...percentageMarks);
-  const max = Math.max(...percentageMarks);
-  const stddev = stats.populationStddev(percentageMarks);
-  
   return {
     mean: stats.mean(percentageMarks),
     count: percentageMarks.length,
