@@ -236,6 +236,12 @@ In any case, there is one way to move forward. The plan is to hack a fully funct
 
 ## Concluding Remarks
 
+I ended up taking the amount of time I estimated conservatively at the beginning to get to the first, fully-working prototype. Perhaps surprisingly, I stressed a bit more than I thought I would for a take-home assignment, and that contributed to spending time on fussing about small details.
+
+Overall it was a fun assignment and, albeit taking longer than I would like. There is still refactoring that I would like to do, and features to implement (mostly an excuse to play with Socket.io) — but it has to stop somewhere.
+
+To avoid making this sound like some creepy self-analysis and over-analysing my own work to the point that I start sprouting nonsense, I should reeeeally stop here and now.
+
 ## Originality Statement
 
 I hereby declare that this submission is my own work, and due references are made to code or ideas that heavily influenced this submission.
