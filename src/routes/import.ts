@@ -2,10 +2,7 @@ import fs from 'fs';
 import { Router } from 'express';
 import path from 'path';
 import xml2js from 'xml2js';
-import {
-  default as Result,
-  ResultAttributes,
-} from '../database/models/Result';
+import { default as Result, ResultAttributes } from '../database/models/Result';
 
 const router = Router();
 
@@ -26,12 +23,7 @@ router.post('/', async (request, response) => {
 
       if (processedEntries) {
         for (const processedEntry of processedEntries) {
-          const {
-            testId,
-            studentNumber,
-            firstName,
-            lastName
-          } = processedEntry;
+          const { testId, studentNumber, firstName, lastName } = processedEntry;
 
           const record = await Result.findOne({
             where: {
@@ -44,7 +36,7 @@ router.post('/', async (request, response) => {
 
           if (record) {
             let shouldUpdate = false;
-            
+
             if (processedEntry.availableMarks > record.availableMarks) {
               shouldUpdate = true;
             } else if (
@@ -56,7 +48,7 @@ router.post('/', async (request, response) => {
 
             if (shouldUpdate) {
               const { availableMarks, obtainedMarks } = processedEntry;
-              const percentageMark = obtainedMarks / availableMarks * 100;
+              const percentageMark = (obtainedMarks / availableMarks) * 100;
 
               await record.update({
                 availableMarks,
@@ -70,7 +62,7 @@ router.post('/', async (request, response) => {
         }
       }
     }
-    
+
     if (documentRejected) {
       if (process.env.NODE_ENV !== 'test') {
         const hash = Math.random().toString(36).slice(2, 8);
@@ -81,22 +73,21 @@ router.post('/', async (request, response) => {
           process.env.NODE_ENV === 'development' ? 'dev' : ''
         );
         const filePath = path.join(fileDir, filename);
-  
+
         await fs.promises.readdir(fileDir).catch((_error) => {
           return fs.promises.mkdir(fileDir, { recursive: true });
         });
-  
+
         await fs.promises.writeFile(filePath, request.body);
       }
-      
+
       response.status(400).send({
         ok: false,
         statusCode: 400,
         error: 'Bad request.',
         message: 'The document is malformed, has invalid or missing fields.',
       });
-    }
-    else {
+    } else {
       response.status(201).send({ ok: true });
     }
   } else {
@@ -162,7 +153,7 @@ function processReults(
           !testResult ||
           !testResult.$ ||
           !testResult.$['scanned-on'] ||
-          !(new Date(testResult.$['scanned-on'])) ||
+          !new Date(testResult.$['scanned-on']) ||
           !testResult['first-name'] ||
           testResult['first-name'].length !== 1 ||
           !testResult['last-name'] ||
@@ -179,8 +170,8 @@ function processReults(
           !testResult['summary-marks'][0].$.available.length ||
           !testResult['summary-marks'][0].$.obtained ||
           !testResult['summary-marks'][0].$.obtained.length ||
-          (Number(testResult['summary-marks'][0].$.obtained) > 
-              Number(testResult['summary-marks'][0].$.available))
+          Number(testResult['summary-marks'][0].$.obtained) >
+            Number(testResult['summary-marks'][0].$.available)
         ) {
           reject(
             new Error('The document contains an entry with missing fields.')

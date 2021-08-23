@@ -34,7 +34,7 @@ describe('POST /import', () => {
     availableMarks: 20,
     obtainedMarks: 17,
   };
-  
+
   let server: Server;
 
   beforeAll(async () => {
@@ -108,15 +108,13 @@ describe('POST /import', () => {
   );
 
   it(
-    'should respond with a status code of 201 for normally processed documents'
-    + ' containing a single valid entry',
+    'should respond with a status code of 201 for normally processed documents' +
+      ' containing a single valid entry',
     (done) => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1
-        ]))
+        .send(createDocument([entry1]))
         .expect(201)
         .end((error, _res) => {
           if (error) {
@@ -125,19 +123,17 @@ describe('POST /import', () => {
 
           return done();
         });
-    });
+    }
+  );
 
   it(
-    'should respond with a status code of 201 for normally processed documents'
-    + ' containing 2 valid entries',
+    'should respond with a status code of 201 for normally processed documents' +
+      ' containing 2 valid entries',
     (done) => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry2,
-        ]))
+        .send(createDocument([entry1, entry2]))
         .expect(201)
         .end((error, _res) => {
           if (error) {
@@ -146,20 +142,17 @@ describe('POST /import', () => {
 
           return done();
         });
-    });
+    }
+  );
 
   it(
-    'should respond with a status code of 201 for normally processed documents'
-    + ' containing 3 entries',
+    'should respond with a status code of 201 for normally processed documents' +
+      ' containing 3 entries',
     (done) => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry2,
-          entry3,
-        ]))
+        .send(createDocument([entry1, entry2, entry3]))
         .expect(201)
         .end((error, _res) => {
           if (error) {
@@ -168,21 +161,17 @@ describe('POST /import', () => {
 
           return done();
         });
-    });
+    }
+  );
 
   it(
-    'should respond with a status code of 201 for normally processed documents'
-    + ' containing 4 entries, one of which is duplicated',
+    'should respond with a status code of 201 for normally processed documents' +
+      ' containing 4 entries, one of which is duplicated',
     (done) => {
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry2,
-          entry3,
-          entry1,
-        ]))
+        .send(createDocument([entry1, entry2, entry3, entry1]))
         .expect(201)
         .end((error, _res) => {
           if (error) {
@@ -191,25 +180,23 @@ describe('POST /import', () => {
 
           return done();
         });
-    });
-  
+    }
+  );
+
   it(
-    'should create a new entry for an entry with the same test ID and student'
-    + ' but different first name and/or last name and return status code 201',
+    'should create a new entry for an entry with the same test ID and student' +
+      ' but different first name and/or last name and return status code 201',
     (done) => {
       const entry4: typeof entry1 = {
         ...entry1,
         firstName: 'Nadeshiko',
-        lastName: 'Nyanpasu'
+        lastName: 'Nyanpasu',
       };
 
       supertest(app)
         .post('/import')
         .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry4,
-        ]))
+        .send(createDocument([entry1, entry4]))
         .expect(201)
         .end((error, _res) => {
           if (error) {
@@ -218,30 +205,26 @@ describe('POST /import', () => {
 
           return done();
         });
-    });
+    }
+  );
 
-  it(
-    'should reject an entry for which available > obtained',
-    (done) => {
-      const entry4: typeof entry1 = {
-        ...entry1,
-        obtainedMarks: entry1.availableMarks + 1
-      };
+  it('should reject an entry for which available > obtained', (done) => {
+    const entry4: typeof entry1 = {
+      ...entry1,
+      obtainedMarks: entry1.availableMarks + 1,
+    };
 
-      supertest(app)
-        .post('/import')
-        .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([
-          entry1,
-          entry4,
-        ]))
-        .expect(400)
-        .end((error, _res) => {
-          if (error) {
-            return done(error);
-          }
+    supertest(app)
+      .post('/import')
+      .set('Content-Type', 'text/xml+markr')
+      .send(createDocument([entry1, entry4]))
+      .expect(400)
+      .end((error, _res) => {
+        if (error) {
+          return done(error);
+        }
 
-          return done();
-        });
-    });
+        return done();
+      });
+  });
 });
