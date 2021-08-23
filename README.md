@@ -82,7 +82,7 @@ curl http://localhost:4567
 # Output: {"ok":true}
 
 
-# Testing the '/import' endpoint with by POST-ing a well-formed document.
+# Testing the '/import' endpoint with by POST-ing a well-formed document:
 curl -X POST -H 'Content-Type: text/xml+markr' http://localhost:4567/import -d @- <<XML
   <mcq-test-results>
     <mcq-test-result scanned-on="2017-12-04T12:12:10+11:00">
