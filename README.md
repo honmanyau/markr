@@ -35,14 +35,16 @@ git clone https://github.com/honmanyau/markr
 cd markr
 ```
 
-### With Docker Compose
+Then get started with Docker Compose:
 
 ```sh
 # Development:
 docker-compose up --detach
 
+
 # Production:
 docker-compose up -f docker-compose.production.yml --detach
+
 
 # Test *only*:
 docker-compose run markr-dev npm run test
@@ -50,21 +52,75 @@ docker-compose run markr-dev npm run test:verbose
 docker-compose run markr-dev npm run test:with-coverage
 ```
 
-### With NPM
+**OR**, alternatively, use NPM instead of Docker Compose:
 
 ```sh
 npm i
 
+
 # Development:
 npm run dev
 
+
 # Production:
 npm run build && npm run start # OR npm run start:build
+
 
 # Test *only*:
 npm run test
 npm run test:verbose
 npm run test:with-coverage
+```
+
+Once the server is up and running:
+
+```sh
+# Testing that server is up and running
+curl http://localhost:4567
+
+# Status Code: 200
+# Output: {"ok":true}
+
+
+# Testing the '/import' endpoint with by POST-ing a well-formed document.
+curl -X POST -H 'Content-Type: text/xml+markr' http://localhost:4567/import -d @- <<XML
+  <mcq-test-results>
+    <mcq-test-result scanned-on="2017-12-04T12:12:10+11:00">
+      <first-name>Nadeshiko</first-name>
+      <last-name>Yamato</last-name>
+      <student-number>4224</student-number>
+      <test-id>1007</test-id>
+      <summary-marks available="20" obtained="19" />
+    </mcq-test-result>
+  </mcq-test-results>
+XML
+
+# Status Code: 201
+# Output: {"ok":true}
+
+
+# Testing the '/import' endpoint with by POST-ing a malformed document.
+curl -X POST -H 'Content-Type: text/xml+markr' http://localhost:4567/import -d @- <<XML
+  <mcq-test-results>
+    <mcq-test-result scanned-on="2017-12-04T12:12:10+11:00">
+      <first-name>Nadeshiko</first-name>
+      <last-name>Yamato</last-name>
+      <student-number>4224</student-number>
+      <test-id>1007</test-id>
+      <summary-marks available="20" obtained="19" />
+    </mcq-test-result>
+  </mcq-test-results>
+XML
+
+# Status Code: 400
+# Output: {"ok":false,"statusCode":400,"error":"Bad request.","message":"The document is malformed, has invalid or missing fields."}
+
+
+# Testing the '/result/:testId/aggregate' endpoint
+curl http://localhost:4567/results/1007/aggregate
+
+# Status Code: 200
+# Output: {"testId":"1007","mean":95,"count":1,"p25":95,"p50":95,"p75":95,"min":95,"max":95,"stddev":0}
 ```
 
 ## Development
