@@ -17,7 +17,7 @@ This document describes the prototype of the data processing and storage microse
     - [Server](#server)
     - [Database](#databse)
     - [Testing](#testing)
-  - [Deployment](#deployment)
+    - [Deployment](#deployment)
 - [Potential Extensions](#potential-extensions)
 - [Beginning Remarks](#beginning-remarks)
 - [Concluding Remarks](#concluding-remarks)
