@@ -1,7 +1,4 @@
-import {
-  default as Result,
-  ResultAttributes,
-} from '../../src/database/models/Result';
+import { ResultAttributes } from '../../src/database/models/Result';
 
 /**
  * This function creates an XML document as a string given a set of parameters
