@@ -52,7 +52,7 @@ docker-compose run markr-dev npm run test:with-coverage
 **OR**, alternatively, use NPM instead of Docker Compose:
 
 ```sh
-npm i
+npm ci
 
 
 # Development:
@@ -156,7 +156,7 @@ The assumptions below are numbered only so that they are easy to refer to — th
 3. "A document missing some important bits" in the requirements describes violation of either (1) or (2), and the entire document will be rejected and handled accordingly.
 4. The scores given in `<summary-marks>` are always "correct". The microservice will not perform any validation against `<answer>` elements. This is obviously problematic for answers such as that given in the example in the requirements: `<answer question="4 marks-available="1" marks-awarded="1">AC</answer>`; but this implementation wil not handle such cases for scope reasons (and that the boss says it's okay — even though the boss may not be always right).
 5. The microservice will not store results for individual answers described by the `<answer>` elements.
-6. The boss' threat-model is acceptable for this prototype, and we wil not encrypt the database and localhost traffic. If the container is deployed inside trustworthy infrastructure behind a reverse proxy server that already interfaces with the outside world over TLS/HTTPS, then it's probably okay.
+6. The boss' threat-model is acceptable for this prototype, and we wil not encrypt the database and localhost traffic. If the container is deployed inside trustworthy infrastructure behind a reverse proxy server that already interfaces with the outside world over TLS/SSL, then it's probably okay.
 7. A re-sit test has **the same test ID** as the test that it is meant to augment, and follows the same update rules as those for duplicated records.
 8. When an update of scores _may_ occur, `available` takes precedence over `obtained`. If I haven't missed anything, that boils down to:
    - New `available` > old `available` — always update regardless of changes in `obtained`.
@@ -250,7 +250,7 @@ We will use the [Jest](https://jestjs.io) test framework for unit tests. Mostly 
 
 #### Deployment
 
-~~It's part of the requirements, nothing much to be said here and included for co mpleteness!~~
+~~It's part of the requirements, nothing much to be said here and included for completeness!~~
 
 Deployment is done using Docker Compose as stated in the requirement. The project directory contains a single `Dockerfile` that is set up to enable multi-stage builds. Two Docker Compose files are used to enable a development build ([`docker-compose.yml`](./docker-compose.yml)), and a production build ([`docker-compose.production.yml`](./docker-compose.yml), concatenated using the `-f` option).
 
