@@ -185,6 +185,7 @@ The microservice will have the following endpoints and methods:
     - Accepts XML documents sent with the `Content-Type: text/xml+markr` **only**.
     - Rejects malformed documents **with an appropriate HTTP error** ([`415`](https://en.wikipedia.org/wiki/Http_error_codes#4xx_client_errors), I think) according to the requirements. Rejected documents will be "printed out" (in this case we will save the rejected data as a text file to a local directory).
     - For documents that are not rejected, process data as described in the requirements. We will calculate a percentage score for each entry (a pair of student number and test ID) and store it along with the rest of the data in an entry.
+    - **\[Added during development\]: rejected documents are stored in `/rejected` as `.txt` files.
 - `/results/:test-id/aggregate`
   - `GET`
     - Aggregates results for a given test ID and returns a JSON object that includes `mean`, `count`, `p25`, `p50` and `p75`. Other than `count`, these need to be expressed in percentages. Example given: `{"mean":65.0,"stddev":0.0,"min":65.0,"max":65.0,"p25":65.0,"p50":65.0,"p75":65.0,"count":1}`.
@@ -243,6 +244,8 @@ Since it is a JavaScript environment, we will also use [TypeScript](https://www.
 For the DBMS we will use SQLite since there are no strict requirements (well, the team is ignoring me on Slack!), it's just nice and simple to set up and it's file-based. I did consider using a Docker image for PostgreSQL, but I'm not sure how much friction that will end to setting things up for submission later, so I scrapped that thought.
 
 We will use [Sequelize](https://sequelize.org) for interfacing Node.js and SQLite. The choice to use Sequelize here is because we can easily introduce type checking into database models with TypeScript, and we can readily switch between a few SQL dialects in case the team really doesn't like SQLite.
+
+Note that the current implementation uses and an unseeded, in-memory SQLite instance during development (`NODE_ENV=development`) and testing (`NODE_ENV=test`). In production mode (`NODE_ENV=production`) the database in `/database/markr.sqlite` is used, which is automatically created if it doesn't already exist.
 
 #### Testing
 
