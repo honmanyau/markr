@@ -322,10 +322,59 @@ describe('GET /results/:testId/aggregate', () => {
   );
 
   it(
-    'should give updated statistics when presented with a new record with the' +
-      ' same test ID, student number, first name and last name; and has a' +
-      ' higher available mark. This cases tests for both higher available and' +
-      ' obtained marks',
+    'should update both the available and obtained marks of an existing' +
+      ' if the new record has a *higher* obtained marks, and *the same*' +
+      ' available marks.',
+    (done) => {
+      const entry4 = {
+        ...entry1,
+        obtainedMarks: entry1.obtainedMarks + 1,
+      };
+
+      supertest(app)
+        .post('/import')
+        .set('Content-Type', 'text/xml+markr')
+        .send(createDocument([entry1, entry4]))
+        .expect(201)
+        .end(() => {
+          supertest(app)
+            .get('/results/9863/aggregate')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((error, response) => {
+              if (error) {
+                return done(error);
+              }
+
+              const ratio4 =
+                (entry4.obtainedMarks / entry4.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio4]);
+              const expected = {
+                testId: entry4.testId,
+                mean: ratio4,
+                count: 1,
+                p25: ratio4,
+                p50: ratio4,
+                p75: ratio4,
+                min: ratio4,
+                max: ratio4,
+                stddev,
+              };
+
+              expect(entry4.obtainedMarks > entry1.obtainedMarks);
+              expect(entry4.availableMarks === entry1.availableMarks);
+              expect(expected).toEqual(response.body);
+
+              return done();
+            });
+        });
+    }
+  );
+
+  it(
+    'should update both the available and obtained marks of an existing' +
+      ' if the new record has a *higher* obtained marks, and a *higher*' +
+      ' available marks.',
     (done) => {
       const entry4 = {
         ...entry1,
@@ -363,8 +412,8 @@ describe('GET /results/:testId/aggregate', () => {
                 stddev,
               };
 
-              expect(entry4.availableMarks > entry1.availableMarks);
               expect(entry4.obtainedMarks > entry1.obtainedMarks);
+              expect(entry4.availableMarks > entry1.availableMarks);
               expect(expected).toEqual(response.body);
 
               return done();
@@ -374,10 +423,8 @@ describe('GET /results/:testId/aggregate', () => {
   );
 
   it(
-    'should give updated statistics when presented with a new record with the' +
-      ' same test ID, student number, first name and last name; and has a' +
-      ' higher available mark. This cases tests for a higher available mark and' +
-      ' a equal obtained mark',
+    'should NOT update if the new record has *the same* obtained marks' +
+      ' , and a *higher* available marks',
     (done) => {
       const entry4 = {
         ...entry1,
@@ -399,75 +446,23 @@ describe('GET /results/:testId/aggregate', () => {
                 return done(error);
               }
 
-              const ratio4 =
-                (entry4.obtainedMarks / entry4.availableMarks) * 100;
-              const stddev = stats.populationStddev([ratio4]);
+              const ratio1 =
+                (entry1.obtainedMarks / entry1.availableMarks) * 100;
+              const stddev = stats.populationStddev([ratio1]);
               const expected = {
-                testId: entry1.testId,
-                mean: ratio4,
+                testId: entry4.testId,
+                mean: ratio1,
                 count: 1,
-                p25: ratio4,
-                p50: ratio4,
-                p75: ratio4,
-                min: ratio4,
-                max: ratio4,
+                p25: ratio1,
+                p50: ratio1,
+                p75: ratio1,
+                min: ratio1,
+                max: ratio1,
                 stddev,
               };
 
-              expect(entry4.availableMarks > entry1.availableMarks);
               expect(entry4.obtainedMarks === entry1.obtainedMarks);
-              expect(expected).toEqual(response.body);
-
-              return done();
-            });
-        });
-    }
-  );
-
-  it(
-    'should give updated statistics when presented with a new record with the' +
-      ' same test ID, student number, first name and last name; and has a' +
-      ' higher available mark. This cases tests for a higher available mark and' +
-      ' a lower obtained mark',
-    (done) => {
-      const entry4 = {
-        ...entry1,
-        available: entry1.availableMarks + 1,
-        obtained: entry1.obtainedMarks - 1,
-      };
-
-      supertest(app)
-        .post('/import')
-        .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([entry1, entry4]))
-        .expect(201)
-        .end(() => {
-          supertest(app)
-            .get('/results/9863/aggregate')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end((error, response) => {
-              if (error) {
-                return done(error);
-              }
-
-              const ratio4 =
-                (entry4.obtainedMarks / entry4.availableMarks) * 100;
-              const stddev = stats.populationStddev([ratio4]);
-              const expected = {
-                testId: entry1.testId,
-                mean: ratio4,
-                count: 1,
-                p25: ratio4,
-                p50: ratio4,
-                p75: ratio4,
-                min: ratio4,
-                max: ratio4,
-                stddev,
-              };
-
               expect(entry4.availableMarks > entry1.availableMarks);
-              expect(entry4.obtainedMarks < entry1.obtainedMarks);
               expect(expected).toEqual(response.body);
 
               return done();
@@ -477,61 +472,12 @@ describe('GET /results/:testId/aggregate', () => {
   );
 
   it(
-    'should give updated statistics when presented with a new record ' +
-      ' with the same test ID, student number, first name and last name; and' +
-      ' has a higher obtained mark and a equal available mark.',
+    'should NOT update if the new record has a *lower* obtained marks' +
+      ' , and a *higher* available marks',
     (done) => {
       const entry4 = {
         ...entry1,
-        obtainedMarks: entry1.obtainedMarks + 1,
-      };
-
-      supertest(app)
-        .post('/import')
-        .set('Content-Type', 'text/xml+markr')
-        .send(createDocument([entry1, entry4]))
-        .expect(201)
-        .end(() => {
-          supertest(app)
-            .get('/results/9863/aggregate')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end((error, response) => {
-              if (error) {
-                return done(error);
-              }
-
-              const ratio4 =
-                (entry4.obtainedMarks / entry4.availableMarks) * 100;
-              const stddev = stats.populationStddev([ratio4]);
-              const expected = {
-                testId: entry1.testId,
-                mean: ratio4,
-                count: 1,
-                p25: ratio4,
-                p50: ratio4,
-                p75: ratio4,
-                min: ratio4,
-                max: ratio4,
-                stddev,
-              };
-
-              expect(entry4.obtainedMarks > entry1.obtainedMarks);
-              expect(expected).toEqual(response.body);
-
-              return done();
-            });
-        });
-    }
-  );
-
-  it(
-    'should retain previous statistics when presented with a new record' +
-      ' with the same test ID, student number, first name and last name; and' +
-      ' has a higher obtained mark and a equal available mark.',
-    (done) => {
-      const entry4 = {
-        ...entry1,
+        availableMarks: entry1.availableMarks + 1,
         obtainedMarks: entry1.obtainedMarks - 1,
       };
 
@@ -554,7 +500,7 @@ describe('GET /results/:testId/aggregate', () => {
                 (entry1.obtainedMarks / entry1.availableMarks) * 100;
               const stddev = stats.populationStddev([ratio1]);
               const expected = {
-                testId: entry1.testId,
+                testId: entry4.testId,
                 mean: ratio1,
                 count: 1,
                 p25: ratio1,
@@ -566,6 +512,7 @@ describe('GET /results/:testId/aggregate', () => {
               };
 
               expect(entry4.obtainedMarks < entry1.obtainedMarks);
+              expect(entry4.availableMarks > entry1.availableMarks);
               expect(expected).toEqual(response.body);
 
               return done();
