@@ -84,7 +84,6 @@ router.post('/', async (request, response) => {
         message: 'The document is malformed, has invalid or missing fields.',
       });
     } else {
-      // Update statistics for all test IDs seen during processing.
       const testIds = Object.keys(testIdSeen);
 
       await updateStatistics(testIds);
