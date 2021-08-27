@@ -42,18 +42,7 @@ router.post('/', async (request, response) => {
           testIdSeen[testId] = true;
 
           if (record) {
-            let shouldUpdate = false;
-
-            if (processedEntry.availableMarks > record.availableMarks) {
-              shouldUpdate = true;
-            } else if (
-              processedEntry.availableMarks === record.availableMarks &&
-              processedEntry.obtainedMarks > record.obtainedMarks
-            ) {
-              shouldUpdate = true;
-            }
-
-            if (shouldUpdate) {
+            if (processedEntry.obtainedMarks > record.obtainedMarks) {
               const { availableMarks, obtainedMarks } = processedEntry;
               const percentageMark = (obtainedMarks / availableMarks) * 100;
 
