@@ -85,25 +85,9 @@ router.post('/', async (request, response) => {
       });
     } else {
       // Update statistics for all test IDs seen during processing.
-      for (const testId of Object.keys(testIdSeen)) {
-        const results = await Result.findAll({
-          where: { testId },
-        });
-        const existingStats = await Statistics.findOne({
-          where: { testId },
-        });
+      const testIds = Object.keys(testIdSeen);
 
-        const summary = summariseResults(results);
-
-        if (existingStats) {
-          await existingStats.update(summary);
-        } else {
-          await Statistics.create({
-            testId,
-            ...summary,
-          });
-        }
-      }
+      await updateStatistics(testIds);
 
       response.status(201).send({ ok: true });
     }
@@ -251,6 +235,36 @@ function summariseResults(
     max: Math.max(...percentageMarks),
     stddev: stats.populationStddev(percentageMarks),
   };
+}
+
+/**
+ * This function (re)calculates the statistics for the test IDs given and
+ * either create or update the corresponding entry in the Statistics table of
+ * the database.
+ * 
+ * @param {string[]} testIds An array of test IDs.
+ */
+async function updateStatistics(testIds: string[]): Promise<void> {
+  for (const testId of testIds) {
+    const results = await Result.findAll({
+      where: { testId },
+    });
+    
+    const existingStats = await Statistics.findOne({
+      where: { testId },
+    });
+
+    const summary = summariseResults(results);
+
+    if (existingStats) {
+      await existingStats.update(summary);
+    } else {
+      await Statistics.create({
+        testId,
+        ...summary,
+      });
+    }
+  }
 }
 
 // ===========
