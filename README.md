@@ -4,6 +4,8 @@
 
 This document describes the prototype of the data processing and storage microservice for Markr. It was created in fulfillment of a take-home coding challenge.
 
+**Post-submission modifications**: a few things in the `/import` route were bugging me, so I "fixed" them because... it's a Friday night (and discussions on those will probably come up if the process continues)! I haven't merged those into `main`: to see those changes, simply do `git switch post-submission` in the cloned repository and the branch should magically appear!
+
 ## Table of Contents
 
 - [Quick Start](#quick-start)
@@ -168,8 +170,8 @@ These are assumptions on issues I realised during development and made in additi
 
 1. Upload size of the server is arbitrarily set to 256 MB. While there is no indication of what kind of upload size we should expect, it is worth noting that an entry of 20 answers is ~2 KB, so an upload limit of 256 MB should handle > 20000 entries containing 100 answers each.
 2. Based on the sample output provided for the `/results/:testId/aggregate` endpoint (`{"mean":65.0,"stddev":0.0,"min":65.0,"max":65.0,"p25":65.0,"p50":65.0,"p75":65.0,"count":1}`), the microservice returns the **population** standard deviation instead of, if I'm not mistaken, the arguably more appropriate **sample** standard deviation (which has degree of freedom `N - 1` and would produce `Infinity` in the case of a single entry).
-3. It's unclear what method is required for calculating percentiles. The [nearest-rank method](https://en.wikipedia.org/wiki/Percentile) was chosen for simplicity. In reality, this would likely make negligible difference for larger sample sizes. If required, we can always do linear-interpolation with slight modifications to the current implementation.
-4. Student numbers and test IDs are treated as strings at all times. This treatment means that two entries with different student numbers, for example `"001007"` and `"1007"`, are treated as 2 unique entries even if they are otherwise identical.
+3. It's unclear what method is required for calculating percentiles. The [nearest-rank method](https://en.wikipedia.org/wiki/Percentile) was chosen for simplicity. In reality, this would likely make negligible difference for larger sample sizes. If required, we can always do linear interpolation with slight modifications to the current implementation.
+4. Student numbers and test IDs are treated as strings at all times. This treatment means that two entries with the student numbers `"001007"` and `"1007"` are treated as 2 unique entries even if they are otherwise identical.
 
 ## Design and Approach
 
@@ -179,7 +181,7 @@ The microservice will have the following endpoints and methods:
 
 - `/`
   - `GET`
-    - Returns `{ ok: true }` (and maybe a message for identifying Markr) to show that the microservice is up and running.
+    - Returns `{ ok: true }` ~~(and maybe a message for identifying Markr)~~ to show that the microservice is up and running.
 - `/import`
   - `POST`
     - Accepts XML documents sent with the `Content-Type: text/xml+markr` **only**.
@@ -190,7 +192,7 @@ The microservice will have the following endpoints and methods:
   - `GET`
     - Aggregates results for a given test ID and returns a JSON object that includes `mean`, `count`, `p25`, `p50` and `p75`. Other than `count`, these need to be expressed in percentages. Example given: `{"mean":65.0,"stddev":0.0,"min":65.0,"max":65.0,"p25":65.0,"p50":65.0,"p75":65.0,"count":1}`.
     - ~~(Optional) If time allows, we will also implement standard deviation, minimum and maximum. These are not explicitly stated in the requirements, but would be nice to have (I also just realised maybe I was supposed to ask questions about this?).~~ **Implemented**.
-    - (Optional) If time allows, implementing some sort of caching mechanism here would be nice.
+    - ~~(Optional) If time allows, implementing some sort of caching mechanism here would be nice~~ **Implemented, kind of**.
 
 ### Data Models
 
