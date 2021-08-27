@@ -61,20 +61,7 @@ router.post('/', async (request, response) => {
 
     if (documentRejected) {
       if (process.env.NODE_ENV !== 'test') {
-        const hash = Math.random().toString(36).slice(2, 8);
-        const filename = `${Date.now()}_${hash}.txt`;
-        const fileDir = path.join(
-          process.cwd(),
-          'rejected',
-          process.env.NODE_ENV === 'development' ? 'dev' : ''
-        );
-        const filePath = path.join(fileDir, filename);
-
-        await fs.promises.readdir(fileDir).catch((_error) => {
-          return fs.promises.mkdir(fileDir, { recursive: true });
-        });
-
-        await fs.promises.writeFile(filePath, request.body);
+        await rejectDocument(request.body);
       }
 
       response.status(400).send({
@@ -208,6 +195,29 @@ function processReults(
       resolve(formattedResults);
     }
   });
+}
+
+/**
+ * This function writes the given string, which represents a malformed document,
+ * to disk.
+ * 
+ * @param {string} body The ddocument, as a string, to be written to disk. 
+ */
+async function rejectDocument(body: string): Promise<void> {
+  const hash = Math.random().toString(36).slice(2, 8);
+  const filename = `${Date.now()}_${hash}.txt`;
+  const fileDir = path.join(
+    process.cwd(),
+    'rejected',
+    process.env.NODE_ENV === 'development' ? 'dev' : ''
+  );
+  const filePath = path.join(fileDir, filename);
+
+  await fs.promises.readdir(fileDir).catch((_error) => {
+    return fs.promises.mkdir(fileDir, { recursive: true });
+  });
+
+  await fs.promises.writeFile(filePath, body);
 }
 
 /**
