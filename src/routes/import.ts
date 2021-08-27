@@ -86,7 +86,7 @@ router.post('/', async (request, response) => {
     } else {
       const testIds = Object.keys(testIdSeen);
 
-      await updateStatistics(testIds);
+      await updateStatsTable(testIds);
 
       response.status(201).send({ ok: true });
     }
@@ -243,7 +243,7 @@ function summariseResults(
  * 
  * @param {string[]} testIds An array of test IDs.
  */
-async function updateStatistics(testIds: string[]): Promise<void> {
+async function updateStatsTable(testIds: string[]): Promise<void> {
   for (const testId of testIds) {
     const results = await Result.findAll({
       where: { testId },
