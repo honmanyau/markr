@@ -4,6 +4,8 @@
 
 This document describes the prototype of the data processing and storage microservice for Markr. It was created in fulfillment of a take-home coding challenge.
 
+**Post-submission modifications**: a few things in the `/import` route were bugging me, so I "fixed" them because... it's a Friday night (and discussions on those will probably come up if the process continues)! I haven't merged those into `main`: to see those changes, simply do `git switch post-submission` in the cloned repository and the branch should magically appear!
+
 ## Table of Contents
 
 - [Quick Start](#quick-start)
